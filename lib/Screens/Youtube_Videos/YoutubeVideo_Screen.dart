@@ -22,15 +22,22 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
     return Scaffold(
-bottomNavigationBar: CustomBottomBar(),
-      body: SingleChildScrollView(
+      key: _scaffoldKey,
+      drawer: CustomDrawer(),bottomNavigationBar: CustomBottomBar(),
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
           child: SafeArea(
             child: Column(
               children: [
-                CustomAppBar(text: "YT VIDEO",menuiconclr: VtmBlue,addiconclr: Colors.transparent,),
+                CustomAppBar(text: "YT VIDEO",menuiconclr: VtmBlue,addiconclr: Colors.transparent,
+                  clickonmenuicon: (){
+                    print("clicked");
+                    _scaffoldKey.currentState.openDrawer();
+                  },),
                 SizedBox(height: 10,),
                 YoutubePlayer(
                   controller: _controller,
@@ -43,7 +50,7 @@ bottomNavigationBar: CustomBottomBar(),
                   onReady: (){
                     },
                 ),
-
+SizedBox(height: 20,),
                 Expanded(
                   child: Center(
                     child: Container(
@@ -55,99 +62,83 @@ bottomNavigationBar: CustomBottomBar(),
                             return GestureDetector(
                               onTap: () {
 
-                              },
-                              child: Row(
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Card(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              width: MediaQuery.of(context).size.width*0.37,
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.39,
 
 
-                                              child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(
-                                                    5, 5, 5, 5),
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(30.0))),
-                                                    child: ClipRRect(
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                      child:
-                                                      Image.asset("assets/images/bg.jpg",),
-                                                    )),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.fromLTRB(5, 0, 3, 0),
-                                              child: Container(
-                                                  width: MediaQuery.of(context).size.width*0.51,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      Text("LOREL IPSUM LORIOSM LOREL IPSUM",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 14
-                                                        ),),
-                                                      SizedBox(
-                                                        height: 3,
-                                                      ),
-                                                      Text("Lorem ipsum is simply dummy text of the printing",
-                                                        style: TextStyle(
-                                                            fontSize: 12
-                                                        ),),
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "August 9th,2020",
-                                                            style: TextStyle(fontSize: 10,
-                                                                fontWeight: FontWeight.bold),
-                                                          ),
-                                                          Spacer(),
-                                                          Text(
-                                                            "READ MORE",
-                                                            style: TextStyle(fontSize: 10,
-                                                                fontWeight: FontWeight.bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                    ],
-                                                  )),
-                                            ),
-                                          ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 5, 0, 5),
+                                            child: Container(
+
+                                                child: ClipRRect(
+
+                                                  child:
+                                                  Image.asset("assets/images/bg.jpg",),
+                                                )),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: <Widget>[],
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.fromLTRB(5, 0, 3, 0),
+                                          child: Container(
+                                              width: MediaQuery.of(context).size.width*0.50,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text("Your Video Title",
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.w800,
+                                                        fontSize: 14,
+                                                      fontFamily: 'Montserrat-SemiBold'
+                                                    ),),
+                                                  SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  Text("13.4k Videos",
+                                                    style: TextStyle(
+                                                        fontSize: 10,color: VtmGrey.withOpacity(0.3)
+                                                    ),),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Text(
+                                                    "Chillyfy Playlist",
+                                                    style: TextStyle(fontSize: 10,
+                                                        fontWeight: FontWeight.bold,color: VtmGrey.withOpacity(0.3)),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                ],
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: <Widget>[],
+                                )
+                              ],
+                            ),
+                          );
+                        }),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
-
-    );
+    ),);
   }
 }

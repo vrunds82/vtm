@@ -73,282 +73,274 @@ class _VtmHomePageState extends State<VtmHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
-
-    return Scaffold(bottomNavigationBar: CustomBottomBar(),
+    return Scaffold(
+      key: _scaffoldKey,
+      //drawer: CustomDrawer(),
+      bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+        child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAppBar(
-                text: "VTM",
-                menuiconclr: VtmBlue,
-                addiconclr: Colors.transparent,
-              ),
               Column(
                 children: <Widget>[
-                  SizedBox(
-                    height: 20.0,
-                  ),
+
                   Center(
                     child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Stack(
-                          children: <Widget>[
-                            //Bg image
-                            Center(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.9,
-                                    height: MediaQuery.of(context).size.height * 0.38,
-                                    decoration: new BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * .5,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: new DecorationImage(
+                            image: AssetImage('assets/images/bgofvtm.png',),
+                            fit: BoxFit.cover,
+                          )),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
 
-                                      image: new DecorationImage(
-                                        image: new AssetImage(
-                                          "assets/images/bg.jpg",
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: MediaQuery.of(context).size.height*0.06,
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            //Forward Backward
-                            Positioned(
-                              bottom: 0,
-                              right: 0,left: 0,
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: MediaQuery.of(context).size.height*0.07,
-                                      width: MediaQuery.of(context).size.width*0.6,
-                                      decoration: BoxDecoration(
-                                        color: VtmLightBlue,
-                                        borderRadius:
-                                        BorderRadius.circular(40.0),
-                                        boxShadow: [new BoxShadow(
-                                          color: Colors.black,
-                                          blurRadius: 5.0,
-                                        ),],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                                child: SvgPicture.asset(
-                                                  backwardImage,
-                                                  color: VtmBlue,
-                                                  height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.05,
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.05,
-                                                )),
-                                            Expanded(
-                                              child: Container(),
-                                            ),
-                                            Container(
-                                                child: SvgPicture.asset(
-                                                  forwardImage,
-                                                  color: VtmBlue,
-                                                  height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.05,
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.05,
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 5,
-                                      height: MediaQuery.of(context).size.height*0.02,
-                                      //color: Colors.grey,
-                                    ),
+
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 10, 15, 20),
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+
+                                  GestureDetector(onTap: (){
+
+                                      print("clicked");
+                                      _scaffoldKey.currentState.openDrawer();
+
+                                  },
+                                      child: SvgPicture.asset(menuImage,height: MediaQuery.of(context).size.height*0.03,
+                                        width: MediaQuery.of(context).size.width*0.03,color: VtmWhite,))
                                   ],
                                 ),
                               ),
-                            ),
-                            //Circle
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height*0.12,
-                                    width: MediaQuery.of(context).size.height*0.12,
-                                    decoration: BoxDecoration(shape: BoxShape.circle,
-                                      boxShadow: [new BoxShadow(
-                                        color: Colors.black,
-                                        blurRadius: 5.0,
-                                      ),],
-                                    ),
-                                    //color: Colors.lightBlueAccent,
-                                    child: ClipOval(
-                                      child: Material(
-                                        color: VtmWhite, // button color
-                                        child: InkWell(
-                                          // inkwell color
-                                          child: SizedBox(
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                    28.0),
-                                                child: SvgPicture.asset(
-                                                  pauseImage,
-                                                  color: VtmBlue,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              )),
-                                          onTap: () {},
-                                        ),
-                                      ),
-                                    ),
-                                  )),
-                            )
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
+
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      child: SvgPicture.asset(
-                    infoReadImage,
-                    color: VtmBlue,
-                    height: MediaQuery.of(context).size.width * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  )),
-                  SizedBox(
-                    width: 40,
-                  ),
-                  Container(
-                      child: SvgPicture.asset(
-                    repeatImage,
-                    color: VtmBlue,
-                    height: MediaQuery.of(context).size.width * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  )),
-                ],
+
+    Container(
+
+      height: MediaQuery.of(context).size.height*0.12,
+    child: Stack(
+    children: <Widget>[
+    Center(
+    child: Container(
+      height: MediaQuery.of(context).size.height*0.07,
+      width: MediaQuery.of(context).size.width*0.6,
+      decoration: BoxDecoration(color: VtmLightBlue,
+          boxShadow: [new BoxShadow(
+            color: Colors.black,
+            blurRadius: 5.0,
+          ),],
+    border: Border.all(
+    color: VtmLightBlue.withOpacity(0.2), width: 0.0),
+    borderRadius: BorderRadius.circular(40.0)),
+    child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+    child: Row(
+    children: <Widget>[
+      SvgPicture.asset(
+          backwardImage,
+          color: VtmBlue,
+          height: MediaQuery.of(context)
+            .size
+            .width *
+            0.05,
+          width: MediaQuery.of(context)
+            .size
+            .width *
+            0.05,
+      ),
+    Expanded(
+    child: Container(),
+    ),
+      SvgPicture.asset(
+          forwardImage,
+          color: VtmBlue,
+          height: MediaQuery.of(context)
+            .size
+            .width *
+            0.05,
+          width: MediaQuery.of(context)
+            .size
+            .width *
+            0.05,
+      ),
+    ],
+    ),
+    ),
+    ),
+    ),
+      Align(
+          alignment: Alignment.center,
+          child: Container(
+            height: MediaQuery.of(context).size.height*0.12,
+            width: MediaQuery.of(context).size.height*0.12,
+            decoration: BoxDecoration(shape: BoxShape.circle,
+              boxShadow: [new BoxShadow(
+                color: Colors.black,
+                blurRadius: 5.0,
+              ),],
+            ),
+            //color: Colors.lightBlueAccent,
+            child: ClipOval(
+              child: Material(
+                color: VtmWhite, // button color
+                child: InkWell(
+                  // inkwell color
+                  child: SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            28.0),
+                        child: SvgPicture.asset(
+                          pauseImage,
+                          color: VtmBlue,
+                          fit: BoxFit.contain,
+                        ),
+                      )),
+                  onTap: () {},
+                ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "The Reief Of pain",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: VtmBlue,
-                        fontSize: 16),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Dr. Arnend Stein",
-                    style: TextStyle(color: VtmBlue, fontSize: 14),
-                  ),
-                ],
-              ),
+            ),
+          ))
+    ],
+    ),
+    ),
               SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                alignment: Alignment.center,
-                child: SeekBar(
-                  value: _value,
-                  secondValue: _secondValue,
-                  thumbColor: VtmBlue,
-                  progressColor: VtmBlue,
-                  //secondProgressColor: VtmLightBlue.withOpacity(0.5),
-                  onStartTrackingTouch: () {
-                    print('onStartTrackingTouch');
-                    if (!_done) {
-                      _progressTimer?.cancel();
-                    }
-                  },
-                  onProgressChanged: (value) {
-                    print('onProgressChanged:$value');
-                    _value = value;
-                  },
-                  onStopTrackingTouch: () {
-                    print('onStopTrackingTouch');
-                    if (!_done) {
-                      _resumeProgressTimer();
-                    }
-                  },
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            child: SvgPicture.asset(
+                              infoReadImage,
+                              color: VtmBlue,
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            )),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        Container(
+                            child: SvgPicture.asset(
+                              repeatImage,
+                              color: VtmBlue,
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "The Relief Of Pain",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: VtmBlue,
+                              fontSize: 16,
+                              fontFamily: 'Montserrat-SemiBold'),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Dr. Arnend Stein",
+                          style: TextStyle(color: VtmBlue, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      alignment: Alignment.center,
+                      child: SeekBar(
+                        value: _value,
+                        secondValue: _secondValue,
+                        thumbColor: VtmBlue,
+                        progressColor: VtmBlue,
+                        //secondProgressColor: VtmLightBlue.withOpacity(0.5),
+                        onStartTrackingTouch: () {
+                          print('onStartTrackingTouch');
+                          if (!_done) {
+                            _progressTimer?.cancel();
+                          }
+                        },
+                        onProgressChanged: (value) {
+                          print('onProgressChanged:$value');
+                          _value = value;
+                        },
+                        onStopTrackingTouch: () {
+                          print('onStopTrackingTouch');
+                          if (!_done) {
+                            _resumeProgressTimer();
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    Row(children: [
+                      Container(height: MediaQuery.of(context).size.width*0.07,
+                          width: MediaQuery.of(context).size.width*0.07,
+                          child: SvgPicture.asset(playIntroImage,color: VtmBlue,)),
+                      SizedBox(width: 10,),
+                      Text("Introduction To Program ",style: TextStyle(
+                          color: VtmBlue,fontSize: 14
+                      ),)
+                    ],),
+                    SizedBox(height: 38,),
+                    Row(crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(onTap:(){
+
+
+                        } ,
+                          child: Text("BUY PRO VERSION TO HEAR FULL PROGRAM",
+                            style: TextStyle(
+                                color: VtmRed,fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,fontSize: 12,
+                                fontFamily: "Montserrat-Bold"
+                            ),),
+                        )
+                      ],),
+                  ],
                 ),
-              ),
-              SizedBox(height: 10,),
-
-Row(children: [
-  Container(height: MediaQuery.of(context).size.width*0.07,
-      width: MediaQuery.of(context).size.width*0.07,
-      child: SvgPicture.asset(playIntroImage,color: VtmBlue,)),
-  SizedBox(width: 10,),
-  Text("Introduction To Program ",style: TextStyle(
-    color: VtmBlue,fontSize: 14
-  ),)
-],),
-              SizedBox(height: 20,),
-              Row(crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                GestureDetector(onTap:(){
-
-
-                } ,
-                  child: Text("BUY PRO VERSION TO HEAR FULL PROGRAM",
-                  style: TextStyle(
-                    color: VtmRed,fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,fontSize: 12
-                  ),),
-                )
-              ],)
-
-            ],
-          ),
-        ),
-      ),
+              )
+      ],),
+        ),),
     );
   }
 }

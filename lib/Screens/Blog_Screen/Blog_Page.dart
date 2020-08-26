@@ -9,7 +9,11 @@ class BlogScreen extends StatefulWidget {
 class _BlogScreenState extends State<BlogScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(bottomNavigationBar: CustomBottomBar(),
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+    return Scaffold( key: _scaffoldKey,
+      drawer: CustomDrawer(),
+      bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -17,7 +21,11 @@ class _BlogScreenState extends State<BlogScreen> {
             children: [
               CustomAppBar(menuiconclr: VtmBlue,
               text: "MORE",
-               addiconclr: Colors.transparent,),
+               addiconclr: Colors.transparent,
+                clickonmenuicon: (){
+                  print("clicked");
+                  _scaffoldKey.currentState.openDrawer();
+                },),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -48,15 +56,17 @@ Spacer(flex: 2,),
                                 Text(
                                   "BLOG TAGLINE",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       color: VtmWhite,
-                                      fontWeight: FontWeight.bold),
+                                     // fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat-Black'),
                                 ),
                                 Text(
                                   "TAGLINE 02",
                                   style: TextStyle(fontWeight: FontWeight.w600,
                                     fontSize: 14,
                                     color: VtmWhite,
+                                    fontFamily: 'Montserrat-SemiBold'
                                   ),
                                 )
                               ],
@@ -88,7 +98,7 @@ Spacer(flex: 2,),
                                       child: Row(
                                         children: <Widget>[
                                           Container(
-                                            width: MediaQuery.of(context).size.width*0.37,
+                                            width: MediaQuery.of(context).size.width*0.35,
 
 
                                             child: Padding(
@@ -115,17 +125,19 @@ Spacer(flex: 2,),
                                                   crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text("LOREL IPSUM LORIOSM LOREL IPSUM",
+                                                    Text("LOREAL IPSUM LORIOSM LOREL IPSUM",
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w600,
-                                                      fontSize: 14
+                                                      fontSize: 12,
+                                                      fontFamily: 'Montserrat-Regular'
                                                     ),),
                                                     SizedBox(
                                                       height: 3,
                                                     ),
                                                     Text("Lorem ipsum is simply dummy text of the printing",
                                                     style: TextStyle(
-                                                      fontSize: 12
+                                                      fontSize: 10,
+                                                        fontFamily: 'Montserrat-Regular'
                                                     ),),
                                                     SizedBox(
                                                       height: 5,
@@ -141,7 +153,8 @@ Spacer(flex: 2,),
                                                         Text(
                                                           "READ MORE",
                                                           style: TextStyle(fontSize: 10,
-                                                              fontWeight: FontWeight.bold),
+                                                              fontWeight: FontWeight.bold,
+                                                              fontFamily: 'Montserrat-Regular'),
                                                         ),
                                                       ],
                                                     ),

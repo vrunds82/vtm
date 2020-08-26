@@ -14,7 +14,11 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     var rating = 3.0;
     bool isFavorite = false;
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: CustomDrawer(),
       bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
@@ -23,7 +27,11 @@ class _HistoryPageState extends State<HistoryPage> {
             children: [
               CustomAppBar(addiconclr: VtmBlue,
               text: "HISTORY",
-              menuiconclr: VtmBlue,),
+              menuiconclr: VtmBlue,
+                clickonmenuicon: (){
+                  print("clicked");
+                  _scaffoldKey.currentState.openDrawer();
+                },),
               SizedBox(height: 10,),
               Expanded(
                   child:Center(
@@ -43,11 +51,15 @@ child: Column(crossAxisAlignment: CrossAxisAlignment.center,
   children: [
     SizedBox(height: 15,),
         Text("Program Started 20.7.2020 - 20.13",style: TextStyle(
-          color: VtmGrey.withOpacity(0.3)
+          color: VtmGrey.withOpacity(0.3),
+          fontFamily: 'Montserrat-Regular',
+           fontWeight: FontWeight.w600
         ),),
     SizedBox(height: 5,),
     Text("Did the session help?",style: TextStyle(
-      color: VtmGrey.withOpacity(0.3)
+      color: VtmGrey.withOpacity(0.3),
+        fontFamily: 'Montserrat-Regular',
+        fontWeight: FontWeight.w600
     ),),
     SizedBox(height: 5,),
                                 SmoothStarRating(
@@ -78,10 +90,13 @@ child: Column(crossAxisAlignment: CrossAxisAlignment.center,
         borderSide: BorderSide(color: VtmGrey.withOpacity(0.2), width: 1.0),
       ),
         hintText: "Your personal remark about the session",hintStyle: TextStyle(
-          color: VtmGrey.withOpacity(0.2)
+          color: VtmGrey.withOpacity(0.2),
+          fontFamily: 'Montserrat-Regular',
+          fontSize: 14
         )
 
         ),
+        style: TextStyle(color: VtmGrey,fontWeight: FontWeight.w500),
       ),
     ),
     SizedBox(height: 10,),
