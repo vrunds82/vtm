@@ -216,7 +216,7 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: <Widget>[
         SizedBox(height: 20,),
-                ListTile(
+                ListTile(contentPadding: EdgeInsets.only(left:0, right: 0,bottom: 0,top: 0),
                   title: Column(
                     children: [
                       Container(height: MediaQuery.of(context).size.height*0.2,

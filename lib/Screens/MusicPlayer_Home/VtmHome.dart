@@ -142,7 +142,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
     children: <Widget>[
     Center(
     child: Container(
-      height: MediaQuery.of(context).size.height*0.07,
+      height: MediaQuery.of(context).size.height*0.06,
       width: MediaQuery.of(context).size.width*0.6,
       decoration: BoxDecoration(color: VtmLightBlue,
           boxShadow: [new BoxShadow(
@@ -191,8 +191,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
       Align(
           alignment: Alignment.center,
           child: Container(
-            height: MediaQuery.of(context).size.height*0.12,
-            width: MediaQuery.of(context).size.height*0.12,
+            height: MediaQuery.of(context).size.height*0.11,
+            width: MediaQuery.of(context).size.height*0.11,
             decoration: BoxDecoration(shape: BoxShape.circle,
               boxShadow: [new BoxShadow(
                 color: Colors.black,
