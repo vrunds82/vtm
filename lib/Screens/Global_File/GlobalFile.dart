@@ -64,11 +64,11 @@ class CustomAppBar extends StatelessWidget {
 }
 final String playerImage = 'assets/images/player.svg';
 final String infoImage = 'assets/images/info.svg';
-final String historymage = 'assets/images/history.svg';
+final String historyImage = 'assets/images/history.svg';
 final String videoImage = 'assets/images/youtube.svg';
 final String moreImage = 'assets/images/menu.svg';
 final String legalImage = 'assets/images/legal.svg';
-
+final String moreInfo = 'assets/images/moreinfo.svg';
 
 class CustomBottomBar extends StatefulWidget {
 
@@ -184,7 +184,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                 });
                 widget.click();
               },
-              child: SvgPicture.asset('assets/images/youtube.svg',
+              child: SvgPicture.asset('assets/images/moreinfo.svg',
                 color: Global.currentPageIndex==4?
                 VtmBlue:VtmGrey,
 
@@ -243,12 +243,10 @@ class CustomDrawer extends StatelessWidget {
 
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  padding: const EdgeInsets.fromLTRB(25, 15, 15, 0),
                   child: Column(
                     children: [
-                      ListTile(
-
-                        title: Row(
+                      Row(
                           children: [
                             SvgPicture.asset(playerImage,height: MediaQuery.of(context).size.height*0.025,
                               width:MediaQuery.of(context).size.width*0.025,),
@@ -259,89 +257,65 @@ class CustomDrawer extends StatelessWidget {
                             ),),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                      SizedBox(height: 18,),
+                      Row(
+                        children: [
+                          SvgPicture.asset(infoImage,height: MediaQuery.of(context).size.height*0.025,
+                            width:MediaQuery.of(context).size.width*0.025,),
+                          SizedBox(width: 10,),
+                          Text('Infos',style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ],
                       ),
-                      ListTile(
-
-                        title: Row(
-                          children: [
-                            SvgPicture.asset(infoImage,height: MediaQuery.of(context).size.height*0.025,
-                              width:MediaQuery.of(context).size.width*0.025,),
-                            SizedBox(width: 10,),
-                            Text('Infos',style: TextStyle(
-                                fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
-                        },
+                      SizedBox(height: 18,),
+                      Row(
+                        children: [
+                          SvgPicture.asset(historyImage,height: MediaQuery.of(context).size.height*0.025,
+                            width:MediaQuery.of(context).size.width*0.025,),
+                          SizedBox(width: 10,),
+                          Text('History',style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ],
                       ),
-                      ListTile(
-
-                        title: Row(
-                          children: [
-                            SvgPicture.asset(historymage,height: MediaQuery.of(context).size.height*0.025,
-                              width:MediaQuery.of(context).size.width*0.025,),
-                            SizedBox(width: 10,),
-                            Text('History',style: TextStyle(
-                                fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
-                        },
+                      SizedBox(height: 18,),
+                      Row(
+                        children: [
+                          SvgPicture.asset(videoImage,height: MediaQuery.of(context).size.height*0.025,
+                            width:MediaQuery.of(context).size.width*0.025,),
+                          SizedBox(width: 10,),
+                          Text('Videos',style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ],
                       ),
-                      ListTile(
-
-                        title: Row(
-                          children: [
-                            SvgPicture.asset(videoImage,height: MediaQuery.of(context).size.height*0.025,
-                              width:MediaQuery.of(context).size.width*0.025,),
-                            SizedBox(width: 10,),
-                            Text('Videos',style: TextStyle(
-                                fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
-                        },
+                      SizedBox(height: 18,),
+                      Row(
+                        children: [
+                          SvgPicture.asset(moreInfo,height: MediaQuery.of(context).size.height*0.025,
+                            width:MediaQuery.of(context).size.width*0.025,),
+                          SizedBox(width: 10,),
+                          Text('More',style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ],
                       ),
-                      ListTile(
-
-                        title: Row(
-                          children: [
-                            SvgPicture.asset(legalImage,height: MediaQuery.of(context).size.height*0.025,
-                              width:MediaQuery.of(context).size.width*0.025,),
-                            SizedBox(width: 10,),
-                            Text('Legal',style: TextStyle(
-                                fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
-                        },
+                      SizedBox(height: 18,),
+                      Row(
+                        children: [
+                          SvgPicture.asset(legalImage,height: MediaQuery.of(context).size.height*0.025,
+                            width:MediaQuery.of(context).size.width*0.025,),
+                          SizedBox(width: 10,),
+                          Text('Legal',style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ],
                       ),
                     ],
                   ),

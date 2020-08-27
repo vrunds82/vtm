@@ -77,7 +77,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      //drawer: CustomDrawer(),
+      drawer: CustomDrawer(),
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -106,7 +106,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 10, 15, 20),
+                                padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
@@ -117,8 +117,9 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                       _scaffoldKey.currentState.openDrawer();
 
                                   },
-                                      child: SvgPicture.asset(menuImage,height: MediaQuery.of(context).size.height*0.03,
-                                        width: MediaQuery.of(context).size.width*0.03,color: VtmWhite,))
+                                      child: Container(height: MediaQuery.of(context).size.width*0.05,
+                                          width: MediaQuery.of(context).size.width*0.05,
+                                          child: SvgPicture.asset(menuImage,color: VtmWhite,)))
                                   ],
                                 ),
                               ),
@@ -338,6 +339,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                             ),),
                         )
                       ],),
+                    SizedBox(height: 10,),
                   ],
                 ),
               )
