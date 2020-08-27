@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: 'VTM Music Player',
-      home: VtmHomePage(),
+      home: SplashScreenPage(),
       routes: {
 
         'Musicplayer_VtmHome': (context) => VtmHomePage(),

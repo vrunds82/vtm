@@ -26,7 +26,8 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),bottomNavigationBar: CustomBottomBar(),
+      drawer: CustomDrawer(),
+      //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),

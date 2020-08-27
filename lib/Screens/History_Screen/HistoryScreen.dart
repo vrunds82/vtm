@@ -19,7 +19,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(),
-      bottomNavigationBar: CustomBottomBar(),
+      //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),

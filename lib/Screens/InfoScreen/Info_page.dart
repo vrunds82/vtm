@@ -17,7 +17,7 @@ class _InfoScreenState extends State<InfoScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(),
-      bottomNavigationBar: CustomBottomBar(),
+     // bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),

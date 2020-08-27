@@ -78,7 +78,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       //drawer: CustomDrawer(),
-      bottomNavigationBar: CustomBottomBar(),
+      //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

@@ -13,7 +13,7 @@ class _BlogScreenState extends State<BlogScreen> {
 
     return Scaffold( key: _scaffoldKey,
       drawer: CustomDrawer(),
-      bottomNavigationBar: CustomBottomBar(),
+      //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
