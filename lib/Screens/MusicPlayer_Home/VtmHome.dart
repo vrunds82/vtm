@@ -193,8 +193,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
       Align(
           alignment: Alignment.center,
           child: Container(
-            height: MediaQuery.of(context).size.height*0.11,
-            width: MediaQuery.of(context).size.height*0.11,
+            height: MediaQuery.of(context).size.height*0.10,
+            width: MediaQuery.of(context).size.height*0.10,
             decoration: BoxDecoration(shape: BoxShape.circle,
               boxShadow: [new BoxShadow(
                 color: Colors.black,
@@ -210,7 +210,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                   child: SizedBox(
                       child: Padding(
                         padding: const EdgeInsets.all(
-                            28.0),
+                            24.0),
                         child: SvgPicture.asset(
                           pauseImage,
                           color: VtmBlue,
