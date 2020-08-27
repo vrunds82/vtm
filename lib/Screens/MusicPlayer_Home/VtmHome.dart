@@ -137,7 +137,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
     Container(
 
-      height: MediaQuery.of(context).size.height*0.12,
+      height: MediaQuery.of(context).size.height*0.11,
     child: Stack(
     children: <Widget>[
     Center(
@@ -188,6 +188,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
     ),
     ),
     ),
+
+      //circle 
       Align(
           alignment: Alignment.center,
           child: Container(
