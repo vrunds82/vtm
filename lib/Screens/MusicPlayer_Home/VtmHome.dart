@@ -330,7 +330,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                           color: VtmBlue,fontSize: 14
                       ),)
                     ],),
-                    SizedBox(height: 38,),
+                    SizedBox(height: 30,),
                     Row(crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
