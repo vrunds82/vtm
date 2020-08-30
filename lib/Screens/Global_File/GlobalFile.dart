@@ -226,7 +226,7 @@ class CustomDrawer extends StatelessWidget {
                 refresh();
               },
                 contentPadding:
-                    EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
+                EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
                 title: Column(
                   children: [
                     Container(
@@ -234,9 +234,9 @@ class CustomDrawer extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.3,
                         decoration: new BoxDecoration(
                             image: new DecorationImage(
-                          image: new AssetImage("assets/images/bg.jpg"),
-                          fit: BoxFit.cover,
-                        ))),
+                              image: new AssetImage("assets/images/bg.jpg"),
+                              fit: BoxFit.cover,
+                            ))),
                     SizedBox(
                       height: 5,
                     ),
@@ -260,107 +260,132 @@ class CustomDrawer extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(25, 15, 15, 0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          playerImage,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Player',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(onTap: (){
+                      Global.currentPageIndex = 1;
+                      refresh();
+                    },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            playerImage,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Player',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          infoImage,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Infos',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(onTap: (){
+                      Global.currentPageIndex = 0;
+                      refresh();
+                    },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            infoImage,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Infos',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          historyImage,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'History',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(onTap: (){
+                      Global.currentPageIndex = 3;
+                      refresh();
+                    },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            historyImage,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'History',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          videoImage,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Videos',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(onTap: (){
+                      Global.currentPageIndex = 2;
+                      refresh();
+                    },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            videoImage,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Videos',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          moreInfo,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'More',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(onTap: (){
+                      Global.currentPageIndex = 4;
+                      refresh();
+                    },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            moreInfo,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'More',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 18,
