@@ -71,7 +71,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: new AssetImage('assets/images/bg.jpg')
+                                      image: new AssetImage('assets/images/user.jpeg')
                                   )
                               )),
                         ],
@@ -83,8 +83,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           scrollDirection: Axis.vertical,
                           //.horizontal
                           child: new Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,\n \n and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.PageMaker including versions of Lorem Ipsum.PageMaker including versions of Lorem Ipsum.PageMaker including versions of Lorem Ipsum.PageMaker including versions of Lorem Ipsum.",
-                            textAlign: TextAlign.justify,style: new TextStyle(
+"\nDr. Arnd Stein\n\nDr. Arnd Stein holds a doctorate in psychology from famous Ruhr-Universitat Bochum, Germany and has been in private practice since 1975. He is also a noted author and popular contributor to many international radio and television programs.\n\nDr. Arnd Stein developed a technique of treatment for patients involving music played over a slowed beat, and has written a number of books and released a number of CDs featuring said works. Based in Germany, Stein has also contributed to magazines and newspapers. He co-founded the company VTM – Verlag fuer therapeutische Medien, the base for all of his other media activities."      ,                      textAlign: TextAlign.justify,style: new TextStyle(
                               fontSize: 12.0,
                                 fontFamily: 'Montserrat-Light',
 

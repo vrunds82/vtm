@@ -234,7 +234,7 @@ class CustomDrawer extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.3,
                         decoration: new BoxDecoration(
                             image: new DecorationImage(
-                              image: new AssetImage("assets/images/bg.jpg"),
+                              image: new AssetImage("assets/images/songcover.jpeg"),
                               fit: BoxFit.cover,
                             ))),
                     SizedBox(
