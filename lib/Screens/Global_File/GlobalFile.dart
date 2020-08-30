@@ -7,15 +7,12 @@ const VtmLightBlue = Colors.lightBlueAccent;
 const VtmWhite = Colors.white;
 const VtmRed = Colors.red;
 
-class Global{
+class Global {
   static int currentPageIndex = 0;
   static double iconSize = 0.07;
 }
 
-
-
 class CustomAppBar extends StatelessWidget {
-
   final String text;
   final bool isMore;
   final Color addiconclr;
@@ -26,42 +23,59 @@ class CustomAppBar extends StatelessWidget {
   final String addImage = 'assets/images/more.svg';
   final String menuImage = 'assets/images/menu.svg';
 
-  CustomAppBar({this.text,this.isMore,this.addiconclr,this.menuiconclr,this.clickonmenuicon,this.clickonmoreicon});
+  CustomAppBar(
+      {this.text,
+      this.isMore,
+      this.addiconclr,
+      this.menuiconclr,
+      this.clickonmenuicon,
+      this.clickonmoreicon});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-
           Container(
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 children: <Widget>[
-                  Container(height: MediaQuery.of(context).size.width*0.05,
-                      width: MediaQuery.of(context).size.width*0.05,
+                  Container(
+                      height: MediaQuery.of(context).size.width * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.05,
                       child: GestureDetector(
-                          onTap: clickonmenuicon,child: SvgPicture.asset(menuImage,color: menuiconclr,))),
-                 Spacer(),
-                  Text(text,style: TextStyle(
-                    fontSize: 18,color: VtmBlue,
-                    //fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat-Black'
-                  ),),
+                          onTap: clickonmenuicon,
+                          child: SvgPicture.asset(
+                            menuImage,
+                            color: menuiconclr,
+                          ))),
                   Spacer(),
-                 SvgPicture.asset(addImage,height: MediaQuery.of(context).size.width*0.05,
-                   width: MediaQuery.of(context).size.width*0.05,color: addiconclr,),
+                  Text(
+                    text,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: VtmBlue,
+                        //fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat-Black'),
+                  ),
+                  Spacer(),
+                  SvgPicture.asset(
+                    addImage,
+                    height: MediaQuery.of(context).size.width * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    color: addiconclr,
+                  ),
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 }
+
 final String playerImage = 'assets/images/player.svg';
 final String infoImage = 'assets/images/info.svg';
 final String historyImage = 'assets/images/history.svg';
@@ -71,48 +85,43 @@ final String legalImage = 'assets/images/legal.svg';
 final String moreInfo = 'assets/images/moreinfo.svg';
 
 class CustomBottomBar extends StatefulWidget {
+  final VoidCallback click;
 
- final  VoidCallback click;
+  CustomBottomBar({this.click});
 
- CustomBottomBar({this.click});
   @override
   _CustomBottomBarState createState() => _CustomBottomBarState();
 }
 
 class _CustomBottomBarState extends State<CustomBottomBar> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white,
-        borderRadius: BorderRadius.only(topRight:  Radius.circular(20),
-        topLeft: Radius.circular(20)),
-          boxShadow: [new BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 5,
-          ),]
-      ),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+          boxShadow: [
+            new BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 5,
+            ),
+          ]),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Row(
           children: <Widget>[
             GestureDetector(
               onTap: () {
-
                 print(Global.currentPageIndex);
                 Global.currentPageIndex = 0;
-               // Navigator.of(context).pushReplacementNamed('InfoPage');
-                setState(() {
-
-                });
+                // Navigator.of(context).pushReplacementNamed('InfoPage');
+                setState(() {});
                 widget.click();
               },
-              child: SvgPicture.asset('assets/images/info.svg',
-                color: Global.currentPageIndex==0?
-                  VtmBlue:VtmGrey,
-
+              child: SvgPicture.asset(
+                'assets/images/info.svg',
+                color: Global.currentPageIndex == 0 ? VtmBlue : VtmGrey,
                 height: MediaQuery.of(context).size.width * Global.iconSize,
                 width: MediaQuery.of(context).size.width * Global.iconSize,
                 fit: BoxFit.contain,
@@ -122,15 +131,13 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             GestureDetector(
               onTap: () {
                 Global.currentPageIndex = 1;
-               // Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
-                setState(() {
-
-                });
+                // Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
+                setState(() {});
                 widget.click();
               },
-              child:  SvgPicture.asset('assets/images/player.svg',
-                color: Global.currentPageIndex==1?
-                VtmBlue:VtmGrey,
+              child: SvgPicture.asset(
+                'assets/images/player.svg',
+                color: Global.currentPageIndex == 1 ? VtmBlue : VtmGrey,
                 height: MediaQuery.of(context).size.width * Global.iconSize,
                 width: MediaQuery.of(context).size.width * Global.iconSize,
                 fit: BoxFit.contain,
@@ -140,16 +147,13 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             GestureDetector(
               onTap: () {
                 Global.currentPageIndex = 2;
-               // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
-                setState(() {
-
-                });
+                // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
+                setState(() {});
                 widget.click();
               },
-              child: SvgPicture.asset('assets/images/youtube.svg',
-                color: Global.currentPageIndex==2?
-                VtmBlue:VtmGrey,
-
+              child: SvgPicture.asset(
+                'assets/images/youtube.svg',
+                color: Global.currentPageIndex == 2 ? VtmBlue : VtmGrey,
                 height: MediaQuery.of(context).size.width * Global.iconSize,
                 width: MediaQuery.of(context).size.width * Global.iconSize,
                 fit: BoxFit.contain,
@@ -159,16 +163,13 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             GestureDetector(
               onTap: () {
                 Global.currentPageIndex = 3;
-               // Navigator.of(context).pushReplacementNamed('HistoryPage');
-                setState(() {
-
-                });
+                // Navigator.of(context).pushReplacementNamed('HistoryPage');
+                setState(() {});
                 widget.click();
               },
-              child: SvgPicture.asset('assets/images/history.svg',
-                color: Global.currentPageIndex==3?
-                VtmBlue:VtmGrey,
-
+              child: SvgPicture.asset(
+                'assets/images/history.svg',
+                color: Global.currentPageIndex == 3 ? VtmBlue : VtmGrey,
                 height: MediaQuery.of(context).size.width * Global.iconSize,
                 width: MediaQuery.of(context).size.width * Global.iconSize,
                 fit: BoxFit.contain,
@@ -179,15 +180,12 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               onTap: () {
                 Global.currentPageIndex = 4;
                 //Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
-                setState(() {
-
-                });
+                setState(() {});
                 widget.click();
               },
-              child: SvgPicture.asset('assets/images/moreinfo.svg',
-                color: Global.currentPageIndex==4?
-                VtmBlue:VtmGrey,
-
+              child: SvgPicture.asset(
+                moreInfo,
+                color: Global.currentPageIndex == 4 ? VtmBlue:VtmGrey,
                 height: MediaQuery.of(context).size.width * Global.iconSize,
                 width: MediaQuery.of(context).size.width * Global.iconSize,
                 fit: BoxFit.contain,
@@ -200,130 +198,187 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   }
 }
 
-
 //Drawer
 class CustomDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return
-      Container(width: MediaQuery.of(context).size.width*0.55,
-        child: SafeArea(
-          child: Drawer(
-
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-        SizedBox(height: 20,),
-                ListTile(contentPadding: EdgeInsets.only(left:0, right: 0,bottom: 0,top: 0),
-                  title: Column(
-                    children: [
-                      Container(height: MediaQuery.of(context).size.height*0.2,
-                          width: MediaQuery.of(context).size.width*0.3,
-                          decoration: new BoxDecoration(
-                              image: new DecorationImage(
-                                image: new AssetImage("assets/images/bg.jpg"),
-                                fit: BoxFit.cover,
-                              )
-                          )
-                      ),
-                      SizedBox(height: 5,),
-                      Text("The Relief of Pain",style: TextStyle(
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.55,
+      child: SafeArea(
+        child: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                contentPadding:
+                    EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
+                title: Column(
+                  children: [
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        decoration: new BoxDecoration(
+                            image: new DecorationImage(
+                          image: new AssetImage("assets/images/bg.jpg"),
+                          fit: BoxFit.cover,
+                        ))),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "The Relief of Pain",
+                      style: TextStyle(
                           fontFamily: 'Montserrat-SemiBold',
-                        fontWeight: FontWeight.bold
-                      ),),
-                      SizedBox(height: 3,),
-                      Text("Dr. Arnd Stein",style: TextStyle(
-                          fontFamily: 'Montserrat-Light'
-                      ),)
-
-                    ],
-                  ),
-
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Dr. Arnd Stein",
+                      style: TextStyle(fontFamily: 'Montserrat-Light'),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 15, 15, 0),
-                  child: Column(
-                    children: [
-                      Row(
-                          children: [
-                            SvgPicture.asset(playerImage,height: MediaQuery.of(context).size.height*0.025,
-                              width:MediaQuery.of(context).size.width*0.025,),
-                            SizedBox(width: 10,),
-                            Text('Player',style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                            ),),
-                          ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 15, 15, 0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          playerImage,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
                         ),
-                      SizedBox(height: 18,),
-                      Row(
-                        children: [
-                          SvgPicture.asset(infoImage,height: MediaQuery.of(context).size.height*0.025,
-                            width:MediaQuery.of(context).size.width*0.025,),
-                          SizedBox(width: 10,),
-                          Text('Infos',style: TextStyle(
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Player',
+                          style: TextStyle(
                               fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                      SizedBox(height: 18,),
-                      Row(
-                        children: [
-                          SvgPicture.asset(historyImage,height: MediaQuery.of(context).size.height*0.025,
-                            width:MediaQuery.of(context).size.width*0.025,),
-                          SizedBox(width: 10,),
-                          Text('History',style: TextStyle(
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          infoImage,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Infos',
+                          style: TextStyle(
                               fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                      SizedBox(height: 18,),
-                      Row(
-                        children: [
-                          SvgPicture.asset(videoImage,height: MediaQuery.of(context).size.height*0.025,
-                            width:MediaQuery.of(context).size.width*0.025,),
-                          SizedBox(width: 10,),
-                          Text('Videos',style: TextStyle(
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          historyImage,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'History',
+                          style: TextStyle(
                               fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                      SizedBox(height: 18,),
-                      Row(
-                        children: [
-                          SvgPicture.asset(moreInfo,height: MediaQuery.of(context).size.height*0.025,
-                            width:MediaQuery.of(context).size.width*0.025,),
-                          SizedBox(width: 10,),
-                          Text('More',style: TextStyle(
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          videoImage,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Videos',
+                          style: TextStyle(
                               fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                      SizedBox(height: 18,),
-                      Row(
-                        children: [
-                          SvgPicture.asset(legalImage,height: MediaQuery.of(context).size.height*0.025,
-                            width:MediaQuery.of(context).size.width*0.025,),
-                          SizedBox(width: 10,),
-                          Text('Legal',style: TextStyle(
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          moreInfo,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'More',
+                          style: TextStyle(
                               fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                    ],
-                  ),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          legalImage,
+                          height: MediaQuery.of(context).size.height * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Legal',
+                          style: TextStyle(
+                              fontFamily: 'MontserratSubrayada-Bold',
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
