@@ -200,6 +200,12 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
 //Drawer
 class CustomDrawer extends StatelessWidget {
+
+  VoidCallback refresh;
+
+
+  CustomDrawer({this.refresh});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -213,7 +219,12 @@ class CustomDrawer extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              ListTile(
+              ListTile(onTap: (){
+
+                Global.currentPageIndex = 1;
+
+                refresh();
+              },
                 contentPadding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
                 title: Column(

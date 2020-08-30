@@ -7,6 +7,13 @@ import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:seekbar/seekbar.dart';
 
 class VtmHomePage extends StatefulWidget {
+
+
+  VoidCallback refreshScreen;
+
+
+  VtmHomePage({this.refreshScreen});
+
   @override
   _VtmHomePageState createState() => _VtmHomePageState();
 }
@@ -77,7 +84,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(refresh: widget.refreshScreen,),
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -5,6 +5,11 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 
 class HistoryPage extends StatefulWidget {
+
+  VoidCallback refreshScreen;
+
+  HistoryPage({this.refreshScreen});
+
   @override
   _HistoryPageState createState() => _HistoryPageState();
 }
@@ -18,7 +23,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(refresh: widget.refreshScreen,),
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(

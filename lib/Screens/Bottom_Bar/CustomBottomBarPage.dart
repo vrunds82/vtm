@@ -15,7 +15,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   Widget build(BuildContext context) {
 
     List<Widget> pageName = [
-
       InfoScreen(),
       VtmHomePage(),
       Youtubevidepage(),
@@ -25,12 +24,15 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
     return Scaffold(
     bottomNavigationBar: CustomBottomBar(click: (){
-
-      setState(() {
-
-      });
+      refreshScreen();
     },),
     body: pageName[Global.currentPageIndex],
     );
   }
+
+  refreshScreen(){
+    setState(() {
+    });
+  }
+
 }

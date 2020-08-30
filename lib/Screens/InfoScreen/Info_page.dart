@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 
 class InfoScreen extends StatefulWidget {
+
+  VoidCallback refreshScreen;
+
+
+  InfoScreen({this.refreshScreen});
+
   @override
   _InfoScreenState createState() => _InfoScreenState();
 }
@@ -16,7 +22,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(refresh: widget.refreshScreen,),
      // bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(

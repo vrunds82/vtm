@@ -5,6 +5,12 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 
 class Youtubevidepage extends StatefulWidget {
+
+  VoidCallback refreshScreen;
+
+
+  Youtubevidepage({this.refreshScreen});
+
   @override
   _YoutubevidepageState createState() => _YoutubevidepageState();
 }
@@ -26,7 +32,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(refresh: widget.refreshScreen,),
       //bottomNavigationBar: CustomBottomBar(),
 
       body: SafeArea(
