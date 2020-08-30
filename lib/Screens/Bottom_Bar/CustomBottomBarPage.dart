@@ -15,11 +15,11 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   Widget build(BuildContext context) {
 
     List<Widget> pageName = [
-      InfoScreen(),
-      VtmHomePage(),
-      Youtubevidepage(),
-      HistoryPage(),
-      VtmHomePage(),
+      InfoScreen(refreshScreen: refreshScreen,),
+      VtmHomePage(refreshScreen: refreshScreen,),
+      Youtubevidepage(refreshScreen: refreshScreen,),
+      HistoryPage(refreshScreen: refreshScreen,),
+      VtmHomePage(refreshScreen: refreshScreen,),
     ];
 
     return Scaffold(
