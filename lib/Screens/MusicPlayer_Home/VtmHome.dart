@@ -1,16 +1,16 @@
 import 'dart:async';
-
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:seekbar/seekbar.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+
 
 class VtmHomePage extends StatefulWidget {
-
-
   VoidCallback refreshScreen;
-
 
   VtmHomePage({this.refreshScreen});
 
@@ -27,8 +27,59 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
   bool _done = false;
 
+  bool isplaying = false;
+  Duration _duration = Duration();
+  Duration _position = Duration();
+  AudioCache audioCache;
+  AudioPlayer advancedPlayer;
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  void initplayer(){
+    advancedPlayer = AudioPlayer();
+    audioCache = AudioCache(fixedPlayer: advancedPlayer);
+
+    advancedPlayer.durationHandler = (d) => setState((){
+      _duration = d;
+    });
+
+    advancedPlayer.positionHandler = (p) => setState((){
+      _position = p;
+    });
+  }
+
+  String localFilePath;
+
+
+  Widget slider() {
+    return Slider(
+        activeColor: VtmBlue,
+        inactiveColor: VtmBlue,
+        value: _position.inSeconds.toDouble(),
+        min: 0.0,
+        max: _duration.inSeconds.toDouble(),
+        onChanged: (double value) {
+          setState(() {
+            seekToSecond(value.toInt());
+            value = value;
+          });
+        });
+  }
+
+
+
+  void seekToSecond(int second) {
+    Duration newDuration = Duration(seconds: second);
+
+    advancedPlayer.seek(newDuration);
+  }
+
+
+
   @override
   void initState() {
+    //playLocal();
+    //oadMusic();
+    initplayer();
     _resumeProgressTimer();
     _secondProgressTimer =
         Timer.periodic(const Duration(milliseconds: 10), (_) {
@@ -79,12 +130,14 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(refresh: widget.refreshScreen,),
+      drawer: CustomDrawer(
+        refresh: widget.refreshScreen,
+      ),
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -92,7 +145,6 @@ class _VtmHomePageState extends State<VtmHomePage> {
             children: [
               Column(
                 children: <Widget>[
-
                   Center(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
@@ -100,33 +152,44 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       decoration: new BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: new DecorationImage(
-                            image: AssetImage('assets/images/bgofvtm.png',),
+                            image: AssetImage(
+                              'assets/images/bgofvtm.png',
+                            ),
                             fit: BoxFit.cover,
                           )),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-
-
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 15, 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-
-                                  GestureDetector(onTap: (){
-
-                                      print("clicked");
-                                      _scaffoldKey.currentState.openDrawer();
-
-                                  },
-                                      child: Container(height: MediaQuery.of(context).size.width*0.05,
-                                          width: MediaQuery.of(context).size.width*0.05,
-                                          child: SvgPicture.asset(menuImage,color: VtmWhite,)))
+                                    GestureDetector(
+                                        onTap: () {
+                                          print("clicked");
+                                          _scaffoldKey.currentState
+                                              .openDrawer();
+                                        },
+                                        child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            child: SvgPicture.asset(
+                                              menuImage,
+                                              color: VtmWhite,
+                                            )))
                                   ],
                                 ),
                               ),
@@ -136,103 +199,129 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
               SizedBox(
                 height: 15,
               ),
-
-    Container(
-
-      height: MediaQuery.of(context).size.height*0.11,
-    child: Stack(
-    children: <Widget>[
-    Center(
-    child: Container(
-      height: MediaQuery.of(context).size.height*0.06,
-      width: MediaQuery.of(context).size.width*0.6,
-      decoration: BoxDecoration(color: VtmLightBlue,
-          boxShadow: [new BoxShadow(
-            color: Colors.black,
-            blurRadius: 5.0,
-          ),],
-    border: Border.all(
-    color: VtmLightBlue.withOpacity(0.2), width: 0.0),
-    borderRadius: BorderRadius.circular(40.0)),
-    child: Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-    child: Row(
-    children: <Widget>[
-      SvgPicture.asset(
-          backwardImage,
-          color: VtmBlue,
-          height: MediaQuery.of(context)
-            .size
-            .width *
-            0.05,
-          width: MediaQuery.of(context)
-            .size
-            .width *
-            0.05,
-      ),
-    Expanded(
-    child: Container(),
-    ),
-      SvgPicture.asset(
-          forwardImage,
-          color: VtmBlue,
-          height: MediaQuery.of(context)
-            .size
-            .width *
-            0.05,
-          width: MediaQuery.of(context)
-            .size
-            .width *
-            0.05,
-      ),
-    ],
-    ),
-    ),
-    ),
-    ),
-
-      //circle 
-      Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: MediaQuery.of(context).size.height*0.10,
-            width: MediaQuery.of(context).size.height*0.10,
-            decoration: BoxDecoration(shape: BoxShape.circle,
-              boxShadow: [new BoxShadow(
-                color: Colors.black,
-                blurRadius: 5.0,
-              ),],
-            ),
-            //color: Colors.lightBlueAccent,
-            child: ClipOval(
-              child: Material(
-                color: VtmWhite, // button color
-                child: InkWell(
-                  // inkwell color
-                  child: SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                            24.0),
-                        child: SvgPicture.asset(
-                          pauseImage,
-                          color: VtmBlue,
-                          fit: BoxFit.contain,
+              Container(
+                height: MediaQuery.of(context).size.height * 0.11,
+                child: Stack(
+                  children: <Widget>[
+                    Center(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        decoration: BoxDecoration(
+                            color: VtmLightBlue,
+                            boxShadow: [
+                              new BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                              ),
+                            ],
+                            border: Border.all(
+                                color: VtmLightBlue.withOpacity(0.2),
+                                width: 0.0),
+                            borderRadius: BorderRadius.circular(40.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: Row(
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                backwardImage,
+                                color: VtmBlue,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.05,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              SvgPicture.asset(
+                                forwardImage,
+                                color: VtmBlue,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.05,
+                              ),
+                            ],
+                          ),
                         ),
-                      )),
-                  onTap: () {},
+                      ),
+                    ),
+
+                    //circle
+                    Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.10,
+                          width: MediaQuery.of(context).size.height * 0.10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              new BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                              ),
+                            ],
+                          ),
+                          //color: Colors.lightBlueAccent,
+                          child: isplaying==true?ClipOval(
+                            child: Material(
+                              color: VtmWhite, // button color
+                              child: InkWell(
+                                // inkwell color
+                                child: SizedBox(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(24.0),
+                                      child: SvgPicture.asset(
+                                        pauseImage,
+                                        color: VtmBlue,
+                                        fit: BoxFit.contain,
+                                      )
+                                    )),
+                                onTap: () {
+                                  advancedPlayer.pause();
+                                  isplaying=false;
+                                  print("s");
+                                },
+                              ),
+                            ),
+                          ):
+                          ClipOval(
+                            child: Material(
+                              color: VtmWhite, // button color
+                              child: InkWell(
+                                // inkwell color
+                                child: SizedBox(
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(24.0),
+                                        child: isplaying==true?SvgPicture.asset(
+                                          pauseImage,
+                                          color: VtmBlue,
+                                          fit: BoxFit.contain,
+                                        ):SvgPicture.asset(
+                                          playIntroImage,
+                                          color: VtmBlue,
+                                          fit: BoxFit.contain,
+                                        )
+                                    )),
+                                onTap: () {
+                                  isplaying=true;
+                                  audioCache.play('audio/audio_1.mp3');
+                                  print("sdada");
+                                  setState(() {
+
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ))
+                  ],
                 ),
               ),
-            ),
-          ))
-    ],
-    ),
-    ),
               SizedBox(
                 height: 10,
               ),
@@ -246,21 +335,21 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       children: [
                         Container(
                             child: SvgPicture.asset(
-                              infoReadImage,
-                              color: VtmBlue,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
+                          infoReadImage,
+                          color: VtmBlue,
+                          height: MediaQuery.of(context).size.width * 0.05,
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        )),
                         SizedBox(
                           width: 40,
                         ),
                         Container(
                             child: SvgPicture.asset(
-                              repeatImage,
-                              color: VtmBlue,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
+                          repeatImage,
+                          color: VtmBlue,
+                          height: MediaQuery.of(context).size.width * 0.05,
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        )),
                       ],
                     ),
                     SizedBox(
@@ -296,62 +385,66 @@ class _VtmHomePageState extends State<VtmHomePage> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 0),
                       alignment: Alignment.center,
-                      child: SeekBar(
-                        value: _value,
-                        secondValue: _secondValue,
-                        thumbColor: VtmBlue,
-                        progressColor: VtmBlue,
-                        //secondProgressColor: VtmLightBlue.withOpacity(0.5),
-                        onStartTrackingTouch: () {
-                          print('onStartTrackingTouch');
-                          if (!_done) {
-                            _progressTimer?.cancel();
-                          }
-                        },
-                        onProgressChanged: (value) {
-                          print('onProgressChanged:$value');
-                          _value = value;
-                        },
-                        onStopTrackingTouch: () {
-                          print('onStopTrackingTouch');
-                          if (!_done) {
-                            _resumeProgressTimer();
-                          }
-                        },
-                      ),
+                      child: slider()
                     ),
-                    SizedBox(height: 10,),
-                    Row(children: [
-                      Container(height: MediaQuery.of(context).size.width*0.07,
-                          width: MediaQuery.of(context).size.width*0.07,
-                          child: SvgPicture.asset(playIntroImage,color: VtmBlue,)),
-                      SizedBox(width: 10,),
-                      Text("Introduction To Program ",style: TextStyle(
-                          color: VtmBlue,fontSize: 14
-                      ),)
-                    ],),
-                    SizedBox(height: 30,),
-                    Row(crossAxisAlignment: CrossAxisAlignment.center,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: (){
+                            print("adad");
+                            advancedPlayer.pause();
+                          },
+                          child: Container(
+                              height: MediaQuery.of(context).size.width * 0.07,
+                              width: MediaQuery.of(context).size.width * 0.07,
+                              child: SvgPicture.asset(
+                                playIntroImage,
+                                color: VtmBlue,
+                              )),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Introduction To Program ",
+                          style: TextStyle(color: VtmBlue, fontSize: 14),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(onTap:(){
-
-
-                        } ,
-                          child: Text("BUY PRO VERSION TO HEAR FULL PROGRAM",
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            "BUY PRO VERSION TO HEAR FULL PROGRAM",
                             style: TextStyle(
-                                color: VtmRed,fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,fontSize: 12,
-                                fontFamily: "Montserrat-Bold"
-                            ),),
+                                color: VtmRed,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                fontSize: 12,
+                                fontFamily: "Montserrat-Bold"),
+                          ),
                         )
-                      ],),
-                    SizedBox(height: 10,),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
               )
-      ],),
-        ),),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

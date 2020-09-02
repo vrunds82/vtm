@@ -1,4 +1,4 @@
-package com.vtm
+package com.saurabhinfosys.vtm
 
 import io.flutter.embedding.android.FlutterActivity
 

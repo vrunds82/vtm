@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:vtm/Screens/History_Screen/HistoryScreen.dart';
 import 'package:vtm/Screens/InfoScreen/Info_page.dart';
+import 'package:vtm/Screens/More_Screen/More_Info.dart';
 import 'package:vtm/Screens/MusicPlayer_Home/VtmHome.dart';
 import 'package:vtm/Screens/Youtube_Videos/YoutubeVideo_Screen.dart';
 
@@ -19,7 +20,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       VtmHomePage(refreshScreen: refreshScreen,),
       Youtubevidepage(refreshScreen: refreshScreen,),
       HistoryPage(refreshScreen: refreshScreen,),
-      VtmHomePage(refreshScreen: refreshScreen,),
+      MorePage(refreshScreen: refreshScreen,),
     ];
 
     return Scaffold(

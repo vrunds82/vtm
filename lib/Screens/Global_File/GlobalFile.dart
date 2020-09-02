@@ -6,6 +6,7 @@ const VtmGrey = Colors.grey;
 const VtmLightBlue = Colors.lightBlueAccent;
 const VtmWhite = Colors.white;
 const VtmRed = Colors.red;
+const VtmBlack = Colors.black;
 
 class Global {
   static int currentPageIndex = 0;
