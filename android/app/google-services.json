@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "703197923931",
+    "firebase_url": "https://vtmapp-287913.firebaseio.com",
+    "project_id": "vtmapp-287913",
+    "storage_bucket": "vtmapp-287913.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703197923931:android:99b2153759b2f0c6220d7e",
+        "android_client_info": {
+          "package_name": "com.saurabhinfosys.vtm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703197923931-vpc4qi1ambt66ehmbndab9nks21u59re.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDld4aes1BOnl7bKjmv47vA_c90apkh2WI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703197923931-vpc4qi1ambt66ehmbndab9nks21u59re.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
