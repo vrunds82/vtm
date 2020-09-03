@@ -267,54 +267,68 @@ class _VtmHomePageState extends State<VtmHomePage> {
                             ],
                           ),
                           //color: Colors.lightBlueAccent,
-                          child: isplaying==true?ClipOval(
-                            child: Material(
-                              color: VtmWhite, // button color
-                              child: InkWell(
-                                // inkwell color
-                                child: SizedBox(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(24.0),
-                                      child: SvgPicture.asset(
-                                        pauseImage,
-                                        color: VtmBlue,
-                                        fit: BoxFit.contain,
-                                      )
-                                    )),
-                                onTap: () {
-                                  advancedPlayer.pause();
-                                  isplaying=false;
-                                  print("s");
-                                },
-                              ),
-                            ),
-                          ):
-                          ClipOval(
-                            child: Material(
-                              color: VtmWhite, // button color
-                              child: InkWell(
-                                // inkwell color
-                                child: SizedBox(
-                                    child: Padding(
+                          child: isplaying==true?GestureDetector(
+                            onTap: (){
+                              advancedPlayer.pause();
+                              isplaying=false;
+                              print("s");
+                            },
+                            child: ClipOval(
+                              child: Material(
+                                color: VtmWhite, // button color
+                                child: InkWell(
+                                  // inkwell color
+                                  child: SizedBox(
+                                      child: Padding(
                                         padding: const EdgeInsets.all(24.0),
-                                        child: isplaying==true?SvgPicture.asset(
+                                        child: SvgPicture.asset(
                                           pauseImage,
                                           color: VtmBlue,
                                           fit: BoxFit.contain,
-                                        ):SvgPicture.asset(
-                                          playIntroImage,
-                                          color: VtmBlue,
-                                          fit: BoxFit.contain,
                                         )
-                                    )),
-                                onTap: () {
-                                  isplaying=true;
-                                  audioCache.play('audio/audio_1.mp3');
-                                  print("sdada");
-                                  setState(() {
+                                      )),
+                                  onTap: () {
+                                    advancedPlayer.pause();
+                                    isplaying=false;
+                                    print("s");
+                                  },
+                                ),
+                              ),
+                            ),
+                          ):
+                          GestureDetector(
+                            onTap: (){
+                              isplaying=true;
+                              audioCache.play('audio/audio_1.mp3');
+                              print("sdada");
+                            },
+                            child: ClipOval(
+                              child: Material(
+                                color: VtmWhite, // button color
+                                child: InkWell(
+                                  // inkwell color
+                                  child: SizedBox(
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(24.0),
+                                          child: isplaying==true?SvgPicture.asset(
+                                            pauseImage,
+                                            color: VtmBlue,
+                                            fit: BoxFit.contain,
+                                          ):SvgPicture.asset(
+                                            playIntroImage,
+                                            color: VtmBlue,
+                                            fit: BoxFit.contain,
+                                          )
+                                      )),
+                                  onTap: () {
+                                    isplaying=true;
+                                    audioCache.play('audio/audio_1.mp3');
+                                    print("sdada");
+                                    setState(() {
 
-                                  });
-                                },
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),

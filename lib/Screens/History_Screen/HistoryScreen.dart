@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+
 
 class HistoryPage extends StatefulWidget {
   VoidCallback refreshScreen;
@@ -33,9 +35,9 @@ class _HistoryPageState extends State<HistoryPage> {
         selectedDate = picked;
       });
   }
-  final databaseReference = FirebaseFirestore.instance;
+  //final databaseReference = FirebaseFirestore.instance;
 
-  void createRecord() async {
+  /*void createRecord() async {
     DocumentReference ref = await databaseReference.collection("review")
         .add({
       'date': "${selectedDate.toLocal()}".split(' ')[0],
@@ -43,7 +45,7 @@ class _HistoryPageState extends State<HistoryPage> {
       'comment': comment.text.toString(),
     });
     print(ref.id);
-  }
+  }*/
 
 
   @override
@@ -107,7 +109,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     ),
                                     RaisedButton(
                                       onPressed: () {
-                                        createRecord();
+                                        //createRecord();
                                       },
                                       child: Text('submit'),
                                     ),
