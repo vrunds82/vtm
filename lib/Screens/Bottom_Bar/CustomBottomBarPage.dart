@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:vtm/Screens/History_Screen/HistoryScreen.dart';
@@ -12,6 +13,13 @@ class BottomBarScreen extends StatefulWidget {
 }
 
 class _BottomBarScreenState extends State<BottomBarScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //Firebase.initializeApp().whenComplete(() => print("completed"));
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -22,6 +30,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       HistoryPage(refreshScreen: refreshScreen,),
       MorePage(refreshScreen: refreshScreen,),
     ];
+
 
     return Scaffold(
     bottomNavigationBar: CustomBottomBar(click: (){

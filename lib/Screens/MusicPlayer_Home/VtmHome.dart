@@ -228,22 +228,32 @@ class _VtmHomePageState extends State<VtmHomePage> {
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: Row(
                             children: <Widget>[
-                              SvgPicture.asset(
-                                backwardImage,
-                                color: VtmBlue,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.05,
+                              GestureDetector(
+                                onTap: (){
+                                  print("back");
+                                },
+                                child: SvgPicture.asset(
+                                  backwardImage,
+                                  color: VtmBlue,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  width: MediaQuery.of(context).size.width * 0.05,
+                                ),
                               ),
                               Expanded(
                                 child: Container(),
                               ),
-                              SvgPicture.asset(
-                                forwardImage,
-                                color: VtmBlue,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.05,
+                              GestureDetector(
+                                onTap: (){
+                                  print("next");
+                                },
+                                child: SvgPicture.asset(
+                                  forwardImage,
+                                  color: VtmBlue,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  width: MediaQuery.of(context).size.width * 0.05,
+                                ),
                               ),
                             ],
                           ),
@@ -268,8 +278,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                           ),
                           //color: Colors.lightBlueAccent,
                           child: isplaying==true?GestureDetector(
-                            onTap: (){
-                              advancedPlayer.pause();
+                            onTap: ()async{
+                              await advancedPlayer.pause();
                               isplaying=false;
                               print("s");
                             },
@@ -281,14 +291,21 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                   child: SizedBox(
                                       child: Padding(
                                         padding: const EdgeInsets.all(24.0),
-                                        child: SvgPicture.asset(
-                                          pauseImage,
-                                          color: VtmBlue,
-                                          fit: BoxFit.contain,
+                                        child: GestureDetector(
+                                          onTap: ()async{
+                                            await advancedPlayer.pause();
+                                            isplaying=false;
+                                            print("s");
+                                          },
+                                          child: SvgPicture.asset(
+                                            pauseImage,
+                                            color: VtmBlue,
+                                            fit: BoxFit.contain,
+                                          ),
                                         )
                                       )),
-                                  onTap: () {
-                                    advancedPlayer.pause();
+                                  onTap: () async{
+                                    await advancedPlayer.pause();
                                     isplaying=false;
                                     print("s");
                                   },
@@ -297,9 +314,9 @@ class _VtmHomePageState extends State<VtmHomePage> {
                             ),
                           ):
                           GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
                               isplaying=true;
-                              audioCache.play('audio/audio_1.mp3');
+                              await audioPlayer.play('audio/audio_1.mp3',isLocal: true);
                               print("sdada");
                             },
                             child: ClipOval(
@@ -314,15 +331,26 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                             pauseImage,
                                             color: VtmBlue,
                                             fit: BoxFit.contain,
-                                          ):SvgPicture.asset(
-                                            playIntroImage,
-                                            color: VtmBlue,
-                                            fit: BoxFit.contain,
+                                          ):GestureDetector(
+                                            onTap: ()
+                                            async{
+                                              isplaying=true;
+                                              await audioPlayer.play('audio/audio_1.mp3',isLocal: true);
+                                              print("sdada");
+                                              setState(() {
+
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              playIntroImage,
+                                              color: VtmBlue,
+                                              fit: BoxFit.contain,
+                                            ),
                                           )
                                       )),
-                                  onTap: () {
+                                  onTap: () async{
                                     isplaying=true;
-                                    audioCache.play('audio/audio_1.mp3');
+                                    await audioPlayer.play('audio/audio_1.mp3',isLocal: true);
                                     print("sdada");
                                     setState(() {
 

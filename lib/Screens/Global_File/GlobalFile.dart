@@ -61,11 +61,14 @@ class CustomAppBar extends StatelessWidget {
                         fontFamily: 'Montserrat-Black'),
                   ),
                   Spacer(),
-                  SvgPicture.asset(
-                    addImage,
-                    height: MediaQuery.of(context).size.width * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.05,
-                    color: addiconclr,
+                  GestureDetector(
+                    onTap: clickonmoreicon,
+                    child: SvgPicture.asset(
+                      addImage,
+                      height: MediaQuery.of(context).size.width * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.05,
+                      color: addiconclr,
+                    ),
                   ),
                 ],
               ),

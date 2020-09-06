@@ -19,7 +19,8 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
 
   TextEditingController comment = new TextEditingController();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Firestore firestore = Firestore.instance;
 
   String ratingvalue;
   DateTime selectedDate = DateTime.now();
@@ -35,18 +36,211 @@ class _HistoryPageState extends State<HistoryPage> {
         selectedDate = picked;
       });
   }
-  //final databaseReference = FirebaseFirestore.instance;
 
-  /*void createRecord() async {
-    DocumentReference ref = await databaseReference.collection("review")
+  void createRecord() async {
+    DocumentReference ref = await firestore.collection("review")
         .add({
       'date': "${selectedDate.toLocal()}".split(' ')[0],
       'rating': ratingvalue,
       'comment': comment.text.toString(),
     });
-    print(ref.id);
-  }*/
+    print(ref.firestore);
+  }
 
+
+
+
+  _displayDialog(BuildContext context) async {
+    var rating = 3.0;
+    bool isFavorite = false;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Give Review'),
+            content: Container(
+              decoration: BoxDecoration(
+                  color: VtmLightBlue.withOpacity(0.2),
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(16))),
+              height: MediaQuery.of(context).size.height * 0.40,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () => _selectDate(context),
+                        child: Text('Select date'),
+                      ),
+
+
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Program Started: ",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: VtmBlack,
+                          fontFamily: 'Montserrat-Regular',
+                          fontWeight: FontWeight.w600,),
+                      ),
+                      Text("${selectedDate.toLocal()}".split(' ')[0],
+                          style: TextStyle(
+                              color: VtmBlack,
+                              fontSize: 14,
+                              fontFamily: 'Montserrat-Regular',
+                              fontWeight: FontWeight.w600))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Did the session help?",
+                    style: TextStyle(
+                        color: VtmBlack,
+                        fontFamily: 'Montserrat-Regular',
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SmoothStarRating(
+                    rating: rating,
+                    borderColor: VtmGrey,
+                    isReadOnly: false,
+                    size: 30,
+                    filledIconData: Icons.star,
+                    //halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 2.0,
+                    onRated: (value) {
+                      ratingvalue=value.toString();
+                      print("rating value " + ratingvalue);
+                      // print("rating value dd -> ${value.truncate()}");
+                    },
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: TextField(
+                      controller: comment,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: VtmBlack,
+                                width: 1.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: VtmBlack,
+                                width: 1.0),
+                          ),
+                          hintText:
+                          "Your personal remark about the session",
+                          hintStyle: TextStyle(
+                              color: VtmBlack,
+                              fontFamily: 'Montserrat-Regular',
+                              fontSize: 14)),
+                      style: TextStyle(
+                          color: VtmBlack,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+                  RaisedButton(
+                    child: new Text('SUBMIT'),
+                    onPressed: () {
+                      createRecord();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                  /*Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            'assets/images/dustbin.svg',
+                            color: VtmBlack,
+                          )),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            isFavorite = !isFavorite;
+                            setState(() {});
+                          },
+                          child: isFavorite
+                              ? Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                              : Icon(
+                            Icons.favorite,
+                            color: VtmGrey,
+                          )),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Container(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            'assets/images/share.svg',
+                            color: VtmGrey,
+                          )),
+                    ],
+                  )*/
+                ],
+              ),
+            ),
+            /*actions: <Widget>[
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  createRecord();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],*/
+          );
+        });
+  }
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //Firebase.initializeApp().whenComplete(() => print("completed"));
+    setState(() {
+      //Firebase.initializeApp().whenComplete(() => print("completed"));
+    });
+    //getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +262,10 @@ class _HistoryPageState extends State<HistoryPage> {
             children: [
               CustomAppBar(
                 addiconclr: VtmBlue,
+                clickonmoreicon: (){
+                  _displayDialog(context);
+
+                },
                 text: "HISTORY",
                 menuiconclr: VtmBlue,
                 clickonmenuicon: () {
@@ -78,176 +276,32 @@ class _HistoryPageState extends State<HistoryPage> {
               SizedBox(
                 height: 10,
               ),
-              Expanded(
-                child: Center(
-                  child: new ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: new Container(
-                            decoration: BoxDecoration(
-                                color: VtmLightBlue.withOpacity(0.2),
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(16))),
-                            height: MediaQuery.of(context).size.height * 0.40,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    RaisedButton(
-                                      onPressed: () => _selectDate(context),
-                                      child: Text('Select date'),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () {
-                                        //createRecord();
-                                      },
-                                      child: Text('submit'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Program Started: ",
-                                      style: TextStyle(
-                                        color: VtmBlack,
-                                        fontFamily: 'Montserrat-Regular',
-                                        fontWeight: FontWeight.w600,),
-                                    ),
-                                    Text("${selectedDate.toLocal()}".split(' ')[0],
-                                        style: TextStyle(
-                                            color: VtmBlack,
-                                            fontFamily: 'Montserrat-Regular',
-                                            fontWeight: FontWeight.w600))
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Did the session help?",
-                                  style: TextStyle(
-                                      color: VtmBlack,
-                                      fontFamily: 'Montserrat-Regular',
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                SmoothStarRating(
-                                  rating: rating,
-                                  borderColor: VtmGrey,
-                                  isReadOnly: false,
-                                  size: 40,
-                                  filledIconData: Icons.star,
-                                  //halfFilledIconData: Icons.star_half,
-                                  defaultIconData: Icons.star_border,
-                                  starCount: 5,
-                                  allowHalfRating: true,
-                                  spacing: 2.0,
-                                  onRated: (value) {
-                                    ratingvalue=value.toString();
-                                    print("rating value " + ratingvalue);
-                                    // print("rating value dd -> ${value.truncate()}");
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: TextField(
-                                    controller: comment,
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: VtmBlack,
-                                              width: 1.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: VtmBlack,
-                                              width: 1.0),
-                                        ),
-                                        hintText:
-                                        "Your personal remark about the session",
-                                        hintStyle: TextStyle(
-                                            color: VtmBlack,
-                                            fontFamily: 'Montserrat-Regular',
-                                            fontSize: 14)),
-                                    style: TextStyle(
-                                        color: VtmBlack,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        height: 20,
-                                        width: 20,
-                                        child: SvgPicture.asset(
-                                          'assets/images/dustbin.svg',
-                                          color: VtmBlack,
-                                        )),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    InkWell(
-                                        onTap: () {
-                                          isFavorite = !isFavorite;
-                                          setState(() {});
-                                        },
-                                        child: isFavorite
-                                            ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        )
-                                            : Icon(
-                                          Icons.favorite,
-                                          color: VtmGrey,
-                                        )),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Container(
-                                        height: 20,
-                                        width: 20,
-                                        child: SvgPicture.asset(
-                                          'assets/images/share.svg',
-                                          color: VtmGrey,
-                                        )),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              StreamBuilder(
+                stream: Firestore.instance.collection("review").snapshots(),
+                builder: (context, snapshot)
+                {
+                  if (!snapshot.hasData) {
+                    return Text("Loading..");
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      itemExtent: 190.0,
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        return _buildList(context, snapshot.data.documents[index]);
 
-              Expanded(
+                      },
+
+                    ),
+                  );
+
+
+                },
+              ),
+              //Getdataa(context)
+
+
+              /*Expanded(
                 child: Center(
                   child: new ListView.builder(
                       itemCount: 1,
@@ -392,11 +446,153 @@ class _HistoryPageState extends State<HistoryPage> {
                         );
                       }),
                 ),
-              )
+              )*/
             ],
           ),
         ),
       ),
     );
   }
+}
+Widget _buildList(BuildContext context, DocumentSnapshot document) {
+  bool isFavorite = false;
+  var rating = double.parse(document['rating']);
+
+  return Container(
+    decoration: BoxDecoration(
+        color: VtmLightBlue.withOpacity(0.2),
+        borderRadius:
+        BorderRadius.all(Radius.circular(16))),
+    height: MediaQuery.of(context).size.height * 0.40,
+    child: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Program Started: ",
+                style: TextStyle(
+                  color: VtmBlack,
+                  fontSize: 16,
+                  fontFamily: 'Montserrat-Regular',
+                  fontWeight: FontWeight.w600,),
+              ),
+              Text(document["date"],
+                  style: TextStyle(
+                      color: VtmBlack,
+                      fontSize: 15,
+                      fontFamily: 'Montserrat-Regular',
+                      fontWeight: FontWeight.w600))
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Session Rating",
+            style: TextStyle(
+                color: VtmBlack,
+                fontSize: 16,
+                fontFamily: 'Montserrat-Regular',
+                fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SmoothStarRating(
+            rating:rating,
+            borderColor: VtmGrey,
+            isReadOnly: true,
+            size: 30,
+            filledIconData: Icons.star,
+//halfFilledIconData: Icons.star_half,
+            defaultIconData: Icons.star_border,
+            starCount: 5,
+            allowHalfRating: true,
+            spacing: 2.0,
+
+          ),
+          SizedBox(
+            height: 5,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              children: <Widget>[
+
+                Row(
+                  children: <Widget>[
+                    Text("Review:",style: TextStyle(
+                        color: VtmBlack,fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                SingleChildScrollView(
+                  child: Text("sas df ka da akda d adjad ajkda dja dajd ad jad "
+                      " kdadka jada dka jad djad ajda dajd d"
+                      "jdnaj jda daj jad ajdak dad akd ",style: TextStyle(
+                      color: VtmBlack,fontSize: 14,
+                      fontWeight: FontWeight.w500
+                  ),),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  height: 20,
+                  width: 20,
+                  child: SvgPicture.asset(
+                    'assets/images/dustbin.svg',
+                    color: VtmBlack,
+                  )),
+              SizedBox(
+                width: 40,
+              ),
+              InkWell(
+                  onTap: () {
+                    print("as");
+
+                  },
+                  child: isFavorite
+                      ? Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
+                      : Icon(
+                    Icons.favorite,
+                    color: VtmGrey,
+                  )),
+              SizedBox(
+                width: 40,
+              ),
+              Container(
+                  height: 20,
+                  width: 20,
+                  child: SvgPicture.asset(
+                    'assets/images/share.svg',
+                    color: VtmGrey,
+                  )),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
 }
