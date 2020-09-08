@@ -1,13 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
+import 'package:url_launcher/url_launcher.dart';
+
 
 class BlogInfo extends StatefulWidget {
+
+  wp.Post post;
+
+  BlogInfo({this.post});
+
+
+
   @override
   _BlogInfoState createState() => _BlogInfoState();
 }
 
 class _BlogInfoState extends State<BlogInfo> {
+  wp.Post post;
+  _getPostImage() {
+    if (post.featuredMedia == null) {
+      return SizedBox(height: 10,);
+    } else {
+      return Image.network(post.featuredMedia.sourceUrl);
+    }
+  }
+
+  _launchUrl(String link) async {
+    if (await canLaunch(link)) {
+      await launch(link);
+    } else {
+      throw 'Cannot launch $link';
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -29,35 +58,14 @@ class _BlogInfoState extends State<BlogInfo> {
                   print("clicked");
                   _scaffoldKey.currentState.openDrawer();
                 },),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * .3,
-                  decoration: new BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      image: new DecorationImage(
-                        image: AssetImage('assets/images/bg.jpg'),
-                        fit: BoxFit.cover,
-                      )),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Spacer(flex: 2,),
-
-
-                    ],
-                  ),
-                ),
-              ),
+              _getPostImage(),
               SizedBox(height: 5,),
               Padding(
                 padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("BLOG TAGLINE",
+                    Text(post.title.rendered.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -66,11 +74,11 @@ class _BlogInfoState extends State<BlogInfo> {
                     SizedBox(height: 3,),
                     Row(
                       children: [
-                        Text("TAGLINE 02",style: TextStyle(
+                        Text(post.author.name.toString(),style: TextStyle(
                           fontWeight: FontWeight.w600
                         ),),
                         Spacer(),
-                        Text("22.09.2020",style: TextStyle(
+                        Text(post.date.replaceAll('T', ' '),style: TextStyle(
                           fontSize: 12,color: VtmGrey
                         ),)
                       ],
@@ -99,6 +107,10 @@ class _BlogInfoState extends State<BlogInfo> {
                             ),
                           ),
                         ),
+                        Html( data: post.content.rendered,
+                          onLinkTap: (String url) {
+                            _launchUrl(url);
+                          },)
                       ],
                       ),
                     )

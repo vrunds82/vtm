@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
@@ -40,7 +41,7 @@ class _HistoryPageState extends State<HistoryPage> {
   void createRecord() async {
     DocumentReference ref = await firestore.collection("review")
         .add({
-      'date': "${selectedDate.toLocal()}".split(' ')[0],
+      'date': DateTime.now().toString().split(' ')[0],
       'rating': ratingvalue,
       'comment': comment.text.toString(),
     });
@@ -60,7 +61,7 @@ class _HistoryPageState extends State<HistoryPage> {
             title: Text('Give Review'),
             content: Container(
               decoration: BoxDecoration(
-                  color: VtmLightBlue.withOpacity(0.2),
+                  //color: VtmLightBlue.withOpacity(0.2),
                   borderRadius:
                   BorderRadius.all(Radius.circular(16))),
               height: MediaQuery.of(context).size.height * 0.40,
@@ -70,7 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
@@ -80,7 +81,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
 
                     ],
-                  ),
+                  ),*/
                   SizedBox(
                     height: 5,
                   ),
@@ -95,7 +96,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           fontFamily: 'Montserrat-Regular',
                           fontWeight: FontWeight.w600,),
                       ),
-                      Text("${selectedDate.toLocal()}".split(' ')[0],
+                      Text(DateTime.now().toString().split(' ')[0],
                           style: TextStyle(
                               color: VtmBlack,
                               fontSize: 14,
@@ -285,7 +286,6 @@ class _HistoryPageState extends State<HistoryPage> {
                   }
                   return Expanded(
                     child: ListView.builder(
-                      itemExtent: 190.0,
                       itemCount: snapshot.data.documents.length,
                       itemBuilder: (context, index) {
                         return _buildList(context, snapshot.data.documents[index]);
@@ -483,7 +483,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                   fontFamily: 'Montserrat-Regular',
                   fontWeight: FontWeight.w600,),
               ),
-              Text(document["date"],
+              Text(document['date'],
                   style: TextStyle(
                       color: VtmBlack,
                       fontSize: 15,

@@ -14,6 +14,7 @@ class _PeopleListState extends State<PeopleList> {
 
 
   Firestore firestore = Firestore.instance;
+  //FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   String barcode = "";
 
@@ -72,7 +73,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
               ),),
               Expanded(
                 child: Text(
-                  document["comment"],
+                  document['comment'],
                   style: TextStyle(
                       fontSize: 13, fontWeight: FontWeight.bold),
                 ),
@@ -93,7 +94,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
               ),),
               Expanded(
                 child: Text(
-                  document["date"],
+                  document['date'],
                   style: TextStyle(
                       fontSize: 13, fontWeight: FontWeight.bold),
                 ),
@@ -115,7 +116,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
               ),),
               Expanded(
                 child: Text(
-                  document["rating"],maxLines: 2,
+                  document['rating'],maxLines: 2,
                   style: TextStyle(
                       fontSize: 13, fontWeight: FontWeight.bold),
                 ),

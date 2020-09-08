@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vtm/Screens/Blog_Screen/Blog_InfoPage.dart';
 import 'package:vtm/Screens/Blog_Screen/Blog_Page.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:vtm/Screens/History_Screen/HistoryScreen.dart';
