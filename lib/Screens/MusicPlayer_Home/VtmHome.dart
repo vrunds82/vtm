@@ -112,6 +112,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
   final String infoReadImage = 'assets/images/inforead.svg';
   final String repeatImage = 'assets/images/reapeat.svg';
   final String playIntroImage = 'assets/images/playintro.svg';
+  final String playImage = 'assets/images/Play.svg';
 
   var rating = 3.0;
   bool isFavorite = false;
@@ -195,7 +196,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 50,)
+                                SizedBox(height: 70,)
                               ],
                             ),
                             Positioned(
@@ -203,129 +204,129 @@ class _VtmHomePageState extends State<VtmHomePage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Center(
-                                    child: Container(
-                                      height: MediaQuery.of(context).size.height * 0.11,
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: Center(
-                                              child: Container(
-                                                height: MediaQuery.of(context).size.height * 0.07,
-                                                width: MediaQuery.of(context).size.width * 0.6,
-                                                decoration: BoxDecoration(
-                                                    color: VtmLightBlue,
-                                                    boxShadow: [
-                                                      new BoxShadow(
-                                                        color: Colors.black38,
-                                                        blurRadius: 15.0,
+                                  Container(
+                                    height: MediaQuery.of(context).size.width*0.15,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Center(
+                                            child: Container(
+                                              height: MediaQuery.of(context).size.width * 0.12,
+                                              width: MediaQuery.of(context).size.width * 0.55,
+                                              decoration: BoxDecoration(
+                                                  color: VtmLightBlue,
+                                                  boxShadow: [
+                                                    new BoxShadow(
+                                                      color: Colors.black38,
+                                                      blurRadius: 15.0,
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                      color: VtmLightBlue.withOpacity(0.2),
+                                                      width: 0.0),
+                                                  borderRadius: BorderRadius.circular(40.0)),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        print("back");
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        backwardImage,
+                                                        color: VtmBlue,
+                                                        height:
+                                                        MediaQuery.of(context).size.width * 0.05,
+                                                        width: MediaQuery.of(context).size.width * 0.05,
                                                       ),
-                                                    ],
-                                                    border: Border.all(
-                                                        color: VtmLightBlue.withOpacity(0.2),
-                                                        width: 0.0),
-                                                    borderRadius: BorderRadius.circular(40.0)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      GestureDetector(
-                                                        onTap: (){
-                                                          print("back");
-                                                        },
-                                                        child: SvgPicture.asset(
-                                                          backwardImage,
-                                                          color: VtmBlue,
-                                                          height:
-                                                          MediaQuery.of(context).size.width * 0.05,
-                                                          width: MediaQuery.of(context).size.width * 0.05,
-                                                        ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Container(),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        print("next");
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        forwardImage,
+                                                        color: VtmBlue,
+                                                        height:
+                                                        MediaQuery.of(context).size.width * 0.05,
+                                                        width: MediaQuery.of(context).size.width * 0.05,
                                                       ),
-                                                      Expanded(
-                                                        child: Container(),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: (){
-                                                          print("next");
-                                                        },
-                                                        child: SvgPicture.asset(
-                                                          forwardImage,
-                                                          color: VtmBlue,
-                                                          height:
-                                                          MediaQuery.of(context).size.width * 0.05,
-                                                          width: MediaQuery.of(context).size.width * 0.05,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
                                           ),
+                                        ),
 
-                                          //circle
-                                          Container(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Center(
-                                                    child: Container(
-                                                      height: MediaQuery.of(context).size.height * 0.10,
-                                                      width: MediaQuery.of(context).size.height * 0.10,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        boxShadow: [
-                                                          new BoxShadow(
-                                                            color: Colors.black38,
-                                                            blurRadius: 15.0,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      //color: Colors.lightBlueAccent,
-                                                      child:
-                                                      GestureDetector(
-                                                        onTap: ()async{
-                                                          print("sdada");
-                                                          if(isplaying){
-                                                            assetsAudioPlayer.pause();
-                                                          }else
-                                                            {
-                                                              assetsAudioPlayer.play();
-                                                            }
-                                                          isplaying=!isplaying;
-
-                                                          setState(() {
-
-                                                          });
-                                                        },
-                                                        child: Center(child:
-                                                        ClipOval(
-                                                          child: Material(
-                                                            color: VtmWhite, // button color
-                                                            child: SizedBox(
-                                                                child: isplaying==true?SvgPicture.asset(
-                                                                  pauseImage,
-                                                                  color: Colors.red,
-                                                                  fit: BoxFit.contain,
-                                                                ):SvgPicture.asset(
-                                                                  playIntroImage,
-                                                                  color: Colors.red,
-                                                                  fit: BoxFit.contain,
-                                                                )),
-                                                          ),
-                                                        )
+                                        //circle
+                                        Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Container(
+                                                    height: MediaQuery.of(context).size.width * 0.15,
+                                                    width: MediaQuery.of(context).size.width * 0.15,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      boxShadow: [
+                                                        new BoxShadow(
+                                                          color: Colors.black38,
+                                                          blurRadius: 15.0,
                                                         ),
+                                                      ],
+                                                    ),
+                                                    //color: Colors.lightBlueAccent,
+                                                    child:
+                                                    GestureDetector(
+                                                      onTap: ()async{
+                                                        print("sdada");
+                                                        if(isplaying){
+                                                          assetsAudioPlayer.pause();
+                                                        }else
+                                                          {
+                                                            assetsAudioPlayer.play();
+                                                          }
+                                                        isplaying=!isplaying;
+
+                                                        setState(() {
+
+                                                        });
+                                                      },
+                                                      child: Center(child:
+                                                      ClipOval(
+                                                        child: Material(
+                                                          color: VtmWhite, // button color
+                                                          child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(16.0),
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.only(left: isplaying==true?0:8.0),
+                                                                  child: SvgPicture.asset(
+                                                                    isplaying==true? pauseImage:playImage,
+                                                                    color: Colors.black,
+                                                                    fit: BoxFit.contain,
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        ),
+                                                      )
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ],

@@ -112,9 +112,10 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             ),
           ]),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
         child: SafeArea(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -132,7 +133,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-              Spacer(),
+              /*Spacer(),*/
               GestureDetector(
                 onTap: () {
                   Global.currentPageIndex = 1;
@@ -148,7 +149,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-              Spacer(),
+              /*Spacer(),*/
               GestureDetector(
                 onTap: () {
                   Global.currentPageIndex = 2;
@@ -164,7 +165,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-              Spacer(),
+              /*Spacer(),*/
               GestureDetector(
                 onTap: () {
                   Global.currentPageIndex = 3;
@@ -180,7 +181,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-              Spacer(),
+              /*Spacer(),*/
               GestureDetector(
                 onTap: () {
                   Global.currentPageIndex = 4;
@@ -196,6 +197,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
+
             ],
           ),
         ),
