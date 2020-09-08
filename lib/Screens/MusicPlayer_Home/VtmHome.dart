@@ -34,8 +34,9 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
 
 
-  void initplayer(){
-
+  void initplayer()
+  {
+    assetsAudioPlayer.open(Audio("assets/audio/audio_1.mp3"),autoStart: false,showNotification: true);
   }
 
   String localFilePath;
@@ -56,12 +57,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
         });
   }
 
-
-
   void seekToSecond(int second) {
     Duration newDuration = Duration(seconds: second);
-
-
   }
 
 
@@ -215,14 +212,14 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                             width: MediaQuery.of(context).size.width,
                                             child: Center(
                                               child: Container(
-                                                height: MediaQuery.of(context).size.height * 0.06,
+                                                height: MediaQuery.of(context).size.height * 0.07,
                                                 width: MediaQuery.of(context).size.width * 0.6,
                                                 decoration: BoxDecoration(
                                                     color: VtmLightBlue,
                                                     boxShadow: [
                                                       new BoxShadow(
-                                                        color: Colors.black,
-                                                        blurRadius: 5.0,
+                                                        color: Colors.black38,
+                                                        blurRadius: 15.0,
                                                       ),
                                                     ],
                                                     border: Border.all(
@@ -281,8 +278,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                         shape: BoxShape.circle,
                                                         boxShadow: [
                                                           new BoxShadow(
-                                                            color: Colors.black,
-                                                            blurRadius: 5.0,
+                                                            color: Colors.black38,
+                                                            blurRadius: 15.0,
                                                           ),
                                                         ],
                                                       ),
@@ -291,36 +288,35 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                       GestureDetector(
                                                         onTap: ()async{
                                                           print("sdada");
+                                                          if(isplaying){
+                                                            assetsAudioPlayer.pause();
+                                                          }else
+                                                            {
+                                                              assetsAudioPlayer.play();
+                                                            }
                                                           isplaying=!isplaying;
-                                                          AssetsAudioPlayer.playAndForget(
-                                                            Audio("assets/audio/audio_1.mp3"),
-                                                          );
-                                                          /*  await audioPlayer.play('audio_1.mp3',isLocal: true).catchError((onError){
-                                                      print(onError);
-                                                    });*/
-                                                          /*ClipOval(
-                                                      child: Material(
-                                                    color: VtmWhite, // button color
-                                                    child: SizedBox(
-                                                        child: Padding(
-                                                            padding: const EdgeInsets.all(24.0),
-                                                            child: isplaying==true?SvgPicture.asset(
-                                                              pauseImage,
-                                                              color: VtmBlue,
-                                                              fit: BoxFit.contain,
-                                                            ):SvgPicture.asset(
-                                                              playIntroImage,
-                                                              color: VtmBlue,
-                                                              fit: BoxFit.contain,
-                                                            )
-                                                        )),
-                                                      ),
-                                                    )*/
+
                                                           setState(() {
 
                                                           });
                                                         },
-                                                        child: Center(child: Text("A",style: TextStyle(color: Colors.white,fontSize: 50),)),
+                                                        child: Center(child:
+                                                        ClipOval(
+                                                          child: Material(
+                                                            color: VtmWhite, // button color
+                                                            child: SizedBox(
+                                                                child: isplaying==true?SvgPicture.asset(
+                                                                  pauseImage,
+                                                                  color: VtmBlue,
+                                                                  fit: BoxFit.contain,
+                                                                ):SvgPicture.asset(
+                                                                  playIntroImage,
+                                                                  color: VtmBlue,
+                                                                  fit: BoxFit.contain,
+                                                                )),
+                                                          ),
+                                                        )
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

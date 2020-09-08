@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 
 class BlogScreen extends StatefulWidget {
+
+  VoidCallback refreshScreen;
+
+
+  BlogScreen({this.refreshScreen});
+
   @override
   _BlogScreenState createState() => _BlogScreenState();
 }
@@ -12,7 +18,7 @@ class _BlogScreenState extends State<BlogScreen> {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
     return Scaffold( key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(   refresh: widget.refreshScreen,),
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
