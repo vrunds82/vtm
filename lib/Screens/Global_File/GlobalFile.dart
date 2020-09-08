@@ -113,89 +113,91 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
           ]),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                print(Global.currentPageIndex);
-                Global.currentPageIndex = 0;
-                // Navigator.of(context).pushReplacementNamed('InfoPage');
-                setState(() {});
-                widget.click();
-              },
-              child: SvgPicture.asset(
-                'assets/images/info.svg',
-                color: Global.currentPageIndex == 0 ? VtmBlue : VtmGrey,
-                height: MediaQuery.of(context).size.width * Global.iconSize,
-                width: MediaQuery.of(context).size.width * Global.iconSize,
-                fit: BoxFit.contain,
+        child: SafeArea(
+          child: Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  print(Global.currentPageIndex);
+                  Global.currentPageIndex = 0;
+                  // Navigator.of(context).pushReplacementNamed('InfoPage');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/info.svg',
+                  color: Global.currentPageIndex == 0 ? VtmBlue : VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Global.currentPageIndex = 1;
-                // Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
-                setState(() {});
-                widget.click();
-              },
-              child: SvgPicture.asset(
-                'assets/images/player.svg',
-                color: Global.currentPageIndex == 1 ? VtmBlue : VtmGrey,
-                height: MediaQuery.of(context).size.width * Global.iconSize,
-                width: MediaQuery.of(context).size.width * Global.iconSize,
-                fit: BoxFit.contain,
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Global.currentPageIndex = 1;
+                  // Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/player.svg',
+                  color: Global.currentPageIndex == 1 ? VtmBlue : VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Global.currentPageIndex = 2;
-                // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
-                setState(() {});
-                widget.click();
-              },
-              child: SvgPicture.asset(
-                'assets/images/youtube.svg',
-                color: Global.currentPageIndex == 2 ? VtmBlue : VtmGrey,
-                height: MediaQuery.of(context).size.width * Global.iconSize,
-                width: MediaQuery.of(context).size.width * Global.iconSize,
-                fit: BoxFit.contain,
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Global.currentPageIndex = 2;
+                  // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/youtube.svg',
+                  color: Global.currentPageIndex == 2 ? VtmBlue : VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Global.currentPageIndex = 3;
-                // Navigator.of(context).pushReplacementNamed('HistoryPage');
-                setState(() {});
-                widget.click();
-              },
-              child: SvgPicture.asset(
-                'assets/images/history.svg',
-                color: Global.currentPageIndex == 3 ? VtmBlue : VtmGrey,
-                height: MediaQuery.of(context).size.width * Global.iconSize,
-                width: MediaQuery.of(context).size.width * Global.iconSize,
-                fit: BoxFit.contain,
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Global.currentPageIndex = 3;
+                  // Navigator.of(context).pushReplacementNamed('HistoryPage');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/history.svg',
+                  color: Global.currentPageIndex == 3 ? VtmBlue : VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Global.currentPageIndex = 4;
-                //Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
-                setState(() {});
-                widget.click();
-              },
-              child: SvgPicture.asset(
-                moreInfo,
-                color: Global.currentPageIndex == 4 ? VtmBlue:VtmGrey,
-                height: MediaQuery.of(context).size.width * Global.iconSize,
-                width: MediaQuery.of(context).size.width * Global.iconSize,
-                fit: BoxFit.contain,
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Global.currentPageIndex = 4;
+                  //Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  moreInfo,
+                  color: Global.currentPageIndex == 4 ? VtmBlue:VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

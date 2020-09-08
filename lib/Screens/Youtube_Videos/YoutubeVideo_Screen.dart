@@ -90,44 +90,56 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
   }
 
   _buildVideo(Video video) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => VideoScreen(id: video.id),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => VideoScreen(id: video.id),
+          ),
         ),
-      ),
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-        padding: EdgeInsets.all(10.0),
-        height: 140.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0, 1),
-              blurRadius: 6.0,
-            ),
-          ],
-        ),
-        child: Row(
-          children: <Widget>[
-            Image(
-              width: 150.0,
-              image: NetworkImage(video.thumbnailUrl),
-            ),
-            SizedBox(width: 10.0),
-            Expanded(
-              child: Text(
-                video.title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.0,
+        child: Container(
+          //margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, 0),
+                blurRadius: 4.0,
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Image(
+
+                height: MediaQuery.of(context).size.width*0.25,
+                image: NetworkImage(video.thumbnailUrl),
+              ),
+
+              Expanded(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        video.title,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13.0,
+                        ),
+                      ),
+                    ),
+
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -166,18 +178,21 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
           child: SafeArea(
             child: Column(
               children: [
-                CustomAppBar(
-                  text: "YT VIDEO",
-                  menuiconclr: VtmBlue,
-                  addiconclr: Colors.transparent,
-                  clickonmenuicon: () {
-                    print("clicked");
-                    _scaffoldKey.currentState.openDrawer();
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomAppBar(
+                    text: "YT VIDEO",
+                    menuiconclr: VtmBlue,
+                    addiconclr: Colors.transparent,
+                    clickonmenuicon: () {
+                      print("clicked");
+                      _scaffoldKey.currentState.openDrawer();
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10,
