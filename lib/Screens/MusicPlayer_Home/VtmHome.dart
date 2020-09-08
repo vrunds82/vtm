@@ -18,7 +18,8 @@ class VtmHomePage extends StatefulWidget {
 }
 
 class _VtmHomePageState extends State<VtmHomePage> {
-  double _value = 0.0;
+  double currentValue = 0.0;
+  double maxValue = 0.0;
   double _secondValue = 0.0;
 
   Timer _progressTimer;
@@ -29,21 +30,73 @@ class _VtmHomePageState extends State<VtmHomePage> {
   bool isplaying = false;
   Duration _duration = Duration();
   Duration _position = Duration();
-
+  Duration maxDuration;
+  double audioDuration;
   AssetsAudioPlayer  assetsAudioPlayer = AssetsAudioPlayer();
 
 
 
-  void initplayer()
-  {
-    assetsAudioPlayer.open(Audio("assets/audio/audio_1.mp3"),autoStart: false,showNotification: true);
+  Future<void> initplayer()
+  async {
+   await assetsAudioPlayer.open(Audio("assets/audio/audio_1.mp3"),autoStart: false,showNotification: true);
+    maxDuration= assetsAudioPlayer.current.value.audio.duration;
+    audioDuration = double.parse(maxDuration.inSeconds.toString());
   }
 
   String localFilePath;
 
 
   Widget slider() {
-    return Slider(
+
+
+
+
+
+    return StreamBuilder(
+        stream: assetsAudioPlayer.currentPosition,
+        builder: (context, asyncSnapshot) {
+          final Duration duration = asyncSnapshot.data;
+
+          if(duration!=null) {
+            currentValue = duration.inSeconds.toDouble();
+            maxValue = maxDuration!=null?maxDuration.inSeconds.toDouble():0;
+          }
+
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Slider(
+
+
+                        activeColor: VtmBlue,
+                        inactiveColor: VtmBlue,
+                        value: currentValue,
+                        min: 0.0,
+                        max: audioDuration??100,
+                        onChanged: (double value) {
+                          setState(() {
+                            seekToSecond(value.toInt());
+                            value = value;
+                          });
+                        }),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Row(
+                  children: [
+                    Text("${(currentValue~/60).toInt().toString().padLeft(2,"0")}:${(currentValue%60).toInt().toString().padLeft(2,"0")}"),
+                    Spacer(),
+                    Text("${(maxValue~/60).toInt().toString().padLeft(2,"0")}:${(maxValue%60).toInt().toString().padLeft(2,"0")}")
+                  ],
+                ),
+              )
+            ],
+          );
+        });/*Slider(
         activeColor: VtmBlue,
         inactiveColor: VtmBlue,
         value: _position.inSeconds.toDouble(),
@@ -54,7 +107,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
             seekToSecond(value.toInt());
             value = value;
           });
-        });
+        });*/
   }
 
   void seekToSecond(int second) {
@@ -65,38 +118,15 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
   @override
   void initState() {
-    //playLocal();
-    //oadMusic();
+
     initplayer();
-    _resumeProgressTimer();
-    _secondProgressTimer =
-        Timer.periodic(const Duration(milliseconds: 10), (_) {
-      setState(() {
-        _secondValue += 0.001;
-        if (_secondValue >= 1) {
-          _secondProgressTimer.cancel();
-        }
-      });
-    });
     super.initState();
   }
 
-  _resumeProgressTimer() {
-    _progressTimer = Timer.periodic(const Duration(milliseconds: 10), (_) {
-      setState(() {
-        _value += 0.0005;
-        if (_value >= 1) {
-          _progressTimer.cancel();
-          _done = true;
-        }
-      });
-    });
-  }
 
   @override
   void dispose() {
-    _progressTimer?.cancel();
-    _secondProgressTimer?.cancel();
+    assetsAudioPlayer.dispose();
     super.dispose();
   }
 
@@ -311,7 +341,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                                   padding: EdgeInsets.only(left: isplaying==true?0:8.0),
                                                                   child: SvgPicture.asset(
                                                                     isplaying==true? pauseImage:playImage,
-                                                                    color: Colors.black,
+                                                                    color: VtmBlue,
                                                                     fit: BoxFit.contain,
                                                                   ),
                                                                 ),
@@ -342,74 +372,79 @@ class _VtmHomePageState extends State<VtmHomePage> {
                   ),*/
 
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              child: SvgPicture.asset(
+                            infoReadImage,
+                            color: VtmBlue,
+                            height: MediaQuery.of(context).size.width * 0.05,
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          )),
+                          SizedBox(
+                            width: 40,
+                          ),
+                          Container(
+                              child: SvgPicture.asset(
+                            repeatImage,
+                            color: VtmBlue,
+                            height: MediaQuery.of(context).size.width * 0.05,
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:15.0),
+                        child: Row(
                           children: [
-                            Container(
-                                child: SvgPicture.asset(
-                              infoReadImage,
-                              color: VtmBlue,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
-                            SizedBox(
-                              width: 40,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "The Relief Of Pain",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: VtmBlue,
+                                      fontSize: 16,
+                                      fontFamily: 'Montserrat-SemiBold'),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Dr. Arnend Stein",
+                                  style: TextStyle(color: VtmBlue, fontSize: 14),
+                                ),
+                              ],
                             ),
-                            Container(
-                                child: SvgPicture.asset(
-                              repeatImage,
-                              color: VtmBlue,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "The Relief Of Pain",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: VtmBlue,
-                                  fontSize: 16,
-                                  fontFamily: 'Montserrat-SemiBold'),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Dr. Arnend Stein",
-                              style: TextStyle(color: VtmBlue, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 0),
-                          alignment: Alignment.center,
-                          child: slider()
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+
+                        padding: EdgeInsets.symmetric(horizontal: 0),
+                        alignment: Alignment.center,
+                        child: slider()
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:15.0),
+
+                        child: Row(
                           children: [
                             GestureDetector(
                               onTap: (){
@@ -433,32 +468,32 @@ class _VtmHomePageState extends State<VtmHomePage> {
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                "BUY PRO VERSION TO HEAR FULL PROGRAM",
-                                style: TextStyle(
-                                    color: VtmRed,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 12,
-                                    fontFamily: "Montserrat-Bold"),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              "BUY PRO VERSION TO HEAR FULL PROGRAM",
+                              style: TextStyle(
+                                  color: VtmRed,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 12,
+                                  fontFamily: "Montserrat-Bold"),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -468,4 +503,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
       ),
     );
   }
+
+
+
 }

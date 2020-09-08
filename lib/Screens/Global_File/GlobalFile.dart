@@ -216,10 +216,14 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    double gapBetweenTiles = MediaQuery.of(context).size.width*0.08;
+
+
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
-      child: SafeArea(
-        child: Drawer(
+      child: Drawer(
+        child: SafeArea(
           child: ListView(
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
@@ -291,8 +295,9 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 18,
+                    Divider(
+                      height: gapBetweenTiles,
+                      thickness: 1,
                     ),
                     GestureDetector(onTap: (){
                       Global.currentPageIndex = 0;
@@ -317,8 +322,9 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 18,
+                    Divider(
+                      height: gapBetweenTiles,
+                      thickness: 1,
                     ),
                     GestureDetector(onTap: (){
                       Global.currentPageIndex = 3;
@@ -343,8 +349,9 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 18,
+                    Divider(
+                      height: gapBetweenTiles,
+                      thickness: 1,
                     ),
                     GestureDetector(onTap: (){
                       Global.currentPageIndex = 2;
@@ -369,8 +376,9 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 18,
+                    Divider(
+                      height: gapBetweenTiles,
+                      thickness: 1,
                     ),
                     GestureDetector(onTap: (){
                       Global.currentPageIndex = 4;
@@ -395,8 +403,9 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 18,
+                    Divider(
+                      height: gapBetweenTiles,
+                      thickness: 1,
                     ),
                     Row(
                       children: [

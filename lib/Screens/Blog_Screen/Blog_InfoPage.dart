@@ -36,6 +36,13 @@ class _BlogInfoState extends State<BlogInfo> {
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    post = widget.post;
+  }
+
 
   @override
   Widget build(BuildContext context) {

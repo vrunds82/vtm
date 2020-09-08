@@ -18,6 +18,9 @@ class Youtubevidepage extends StatefulWidget {
 class _YoutubevidepageState extends State<Youtubevidepage> {
 
   //api key:AIzaSyAAk_8rXF2rK_Mll3Hhi50UYjUEMzZLZtM
+
+  String videoID;
+  YoutubePlayerController _controller;
   Channel _channel;
   bool _isLoading = false;
 
@@ -25,6 +28,19 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
   void initState() {
     super.initState();
     _initChannel();
+  }
+
+  _initYoutubePlayer(){
+    _controller = YoutubePlayerController(
+      initialVideoId: videoID,
+      flags: YoutubePlayerFlags(
+        mute: false,
+        autoPlay: true,
+      ),
+    );
+    setState(() {
+
+    });
   }
 
   _initChannel() async {
@@ -93,12 +109,18 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => VideoScreen(id: video.id),
-          ),
-        ),
+        onTap: (){
+
+          videoID=video.id;
+          _initYoutubePlayer();
+
+        //   Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) => VideoScreen(id: video.id),
+        //   ),
+        // );
+        },
         child: Container(
           //margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
 
@@ -197,6 +219,13 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                 SizedBox(
                   height: 10,
                 ),
+                videoID!=null?YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                  onReady: () {
+                    print('Player is ready.');
+                  },
+                ):SizedBox(),
                 _channel != null
                     ? NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollDetails) {

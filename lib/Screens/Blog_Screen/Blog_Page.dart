@@ -162,7 +162,7 @@ class _BlogScreenState extends State<BlogScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => BlogInfo()
+                                        builder: (context) => BlogInfo(post: post,)
                                     )
                                 );
                               },
