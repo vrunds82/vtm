@@ -307,11 +307,11 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                             child: SizedBox(
                                                                 child: isplaying==true?SvgPicture.asset(
                                                                   pauseImage,
-                                                                  color: VtmBlue,
+                                                                  color: Colors.red,
                                                                   fit: BoxFit.contain,
                                                                 ):SvgPicture.asset(
                                                                   playIntroImage,
-                                                                  color: VtmBlue,
+                                                                  color: Colors.red,
                                                                   fit: BoxFit.contain,
                                                                 )),
                                                           ),
