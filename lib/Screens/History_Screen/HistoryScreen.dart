@@ -458,141 +458,148 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
   bool isFavorite = false;
   var rating = double.parse(document['rating']);
 
-  return Container(
-    decoration: BoxDecoration(
-        color: VtmLightBlue.withOpacity(0.2),
-        borderRadius:
-        BorderRadius.all(Radius.circular(16))),
-    height: MediaQuery.of(context).size.height * 0.40,
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Program Started: ",
-                style: TextStyle(
-                  color: VtmBlack,
-                  fontSize: 16,
-                  fontFamily: 'Montserrat-Regular',
-                  fontWeight: FontWeight.w600,),
+  return Column(
+    children: <Widget>[
+      Container(
+        decoration: BoxDecoration(
+            color: VtmLightBlue.withOpacity(0.2),
+            borderRadius:
+            BorderRadius.all(Radius.circular(16))),
+        height: MediaQuery.of(context).size.height * 0.30,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 20,
               ),
-              Text(document['date'],
-                  style: TextStyle(
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Program Started: ",
+                    style: TextStyle(
                       color: VtmBlack,
-                      fontSize: 15,
+                      fontSize: 16,
                       fontFamily: 'Montserrat-Regular',
-                      fontWeight: FontWeight.w600))
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            "Session Rating",
-            style: TextStyle(
-                color: VtmBlack,
-                fontSize: 16,
-                fontFamily: 'Montserrat-Regular',
-                fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          SmoothStarRating(
-            rating:rating,
-            borderColor: VtmGrey,
-            isReadOnly: true,
-            size: 30,
-            filledIconData: Icons.star,
+                      fontWeight: FontWeight.w600,),
+                  ),
+                  Text(document['date'],
+                      style: TextStyle(
+                          color: VtmBlack,
+                          fontSize: 15,
+                          fontFamily: 'Montserrat-Regular',
+                          fontWeight: FontWeight.w600))
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Session Rating",
+                style: TextStyle(
+                    color: VtmBlack,
+                    fontSize: 16,
+                    fontFamily: 'Montserrat-Regular',
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              SmoothStarRating(
+                rating:rating,
+                borderColor: VtmGrey,
+                isReadOnly: true,
+                size: 30,
+                filledIconData: Icons.star,
 //halfFilledIconData: Icons.star_half,
-            defaultIconData: Icons.star_border,
-            starCount: 5,
-            allowHalfRating: true,
-            spacing: 2.0,
+                defaultIconData: Icons.star_border,
+                starCount: 5,
+                allowHalfRating: true,
+                spacing: 2.0,
 
-          ),
-          SizedBox(
-            height: 5,
-          ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
 
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Column(
-              children: <Widget>[
-
-                Row(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Column(
                   children: <Widget>[
-                    Text("Review:",style: TextStyle(
-                        color: VtmBlack,fontSize: 16,
-                        fontWeight: FontWeight.bold
-                    ),),
+
+                    Row(
+                      children: <Widget>[
+                        Text("Review:",style: TextStyle(
+                            color: VtmBlack,fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    SingleChildScrollView(
+                      child: Row(
+                        children: <Widget>[
+                          Text(document['comment'],style: TextStyle(
+                              color: VtmBlack,fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(height: 10,),
-                SingleChildScrollView(
-                  child: Text("sas df ka da akda d adjad ajkda dja dajd ad jad "
-                      " kdadka jada dka jad djad ajda dajd d"
-                      "jdnaj jda daj jad ajdak dad akd ",style: TextStyle(
-                      color: VtmBlack,fontSize: 14,
-                      fontWeight: FontWeight.w500
-                  ),),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    'assets/images/dustbin.svg',
-                    color: VtmBlack,
-                  )),
-              SizedBox(
-                width: 40,
               ),
-              InkWell(
-                  onTap: () {
-                    print("as");
 
-                  },
-                  child: isFavorite
-                      ? Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                      : Icon(
-                    Icons.favorite,
-                    color: VtmGrey,
-                  )),
               SizedBox(
-                width: 40,
+                height: 20,
               ),
-              Container(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    'assets/images/share.svg',
-                    color: VtmGrey,
-                  )),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset(
+                        'assets/images/dustbin.svg',
+                        color: VtmBlack,
+                      )),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        print("as");
+
+                      },
+                      child: isFavorite
+                          ? Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                          : Icon(
+                        Icons.favorite,
+                        color: VtmGrey,
+                      )),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  Container(
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset(
+                        'assets/images/share.svg',
+                        color: VtmGrey,
+                      )),
+                ],
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
-    ),
+      SizedBox(height: 20,)
+    ],
   );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vtm/Screens/Blog_Screen/Blog_InfoPage.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
+import 'dart:io';
 
 
 
@@ -19,6 +20,17 @@ class _BlogScreenState extends State<BlogScreen> {
   wp.WordPress wordPress = wp.WordPress(
     baseUrl: 'http://blog.vtm-stein.de/',
   );
+
+  test()async{
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+    }
+  }
 
   _fetchPosts() {
     Future<List<wp.Post>> posts = wordPress.fetchPosts(
@@ -42,7 +54,13 @@ class _BlogScreenState extends State<BlogScreen> {
     return Image.network(post.featuredMedia.sourceUrl);
   }
 
+@override
+  void initState() {
+    // TODO: implement initState
 
+  test();
+  super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -150,7 +168,7 @@ class _BlogScreenState extends State<BlogScreen> {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          child: SizedBox(),
                         );
                       }
                       return ListView.builder(

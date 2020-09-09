@@ -8,6 +8,11 @@ import 'package:vtm/Screens/InfoScreen/Info_page.dart';
 import 'package:vtm/Screens/More_Screen/More_Info.dart';
 import 'package:vtm/Screens/MusicPlayer_Home/VtmHome.dart';
 import 'package:vtm/Screens/Youtube_Videos/YoutubeVideo_Screen.dart';
+import 'package:connectivity/connectivity.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BottomBarScreen extends StatefulWidget {
   @override
@@ -16,10 +21,23 @@ class BottomBarScreen extends StatefulWidget {
 
 class _BottomBarScreenState extends State<BottomBarScreen> {
 
+  test()async{
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+    }
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    test();
     //Firebase.initializeApp().whenComplete(() => print("completed"));
   }
   @override
