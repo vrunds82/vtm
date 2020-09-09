@@ -65,6 +65,8 @@ class _BlogInfoState extends State<BlogInfo> {
                   print("clicked");
                   _scaffoldKey.currentState.openDrawer();
                 },),
+
+              SizedBox(height: 15,),
               _getPostImage(),
               SizedBox(height: 5,),
               Padding(

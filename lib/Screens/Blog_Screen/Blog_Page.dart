@@ -84,6 +84,7 @@ class _BlogScreenState extends State<BlogScreen> {
                   print("clicked");
                   _scaffoldKey.currentState.openDrawer();
                 },),
+              SizedBox(height: 5,),
               Expanded(
                 child: FutureBuilder(
                     future: _fetchPosts(),
@@ -156,7 +157,14 @@ class _BlogScreenState extends State<BlogScreen> {
                               ),
                             );
                           })
-                          :Center(child: Text("No Internet Connection"));
+                          :Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.signal_wifi_off,size: 50,),
+                              SizedBox(height: 15,),
+                              Text("No Internet Connection",style: TextStyle(fontSize: 16),),
+                            ],
+                          ));
                     }
 
                 ),
