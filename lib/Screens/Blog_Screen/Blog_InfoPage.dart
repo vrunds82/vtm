@@ -77,9 +77,7 @@ class _BlogInfoState extends State<BlogInfo> {
                   _scaffoldKey.currentState.openDrawer();
                 },),
 
-              SizedBox(height: 15,),
-              _getPostImage(),
-              SizedBox(height: 15,),
+
               Expanded(
                 child: Container(
                   child: Padding(
@@ -87,40 +85,50 @@ class _BlogInfoState extends State<BlogInfo> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(post.title.rendered.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          fontFamily: 'Montserrat-Black'
-                        ),),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: [
-                            Text(post.author.name.toString(),style: TextStyle(
-                                fontFamily: 'Montserrat-Black',
-                                fontWeight: FontWeight.w600
-                            ),),
-                            Spacer(),
-                            Text(post.date.replaceAll('T', ' '),style: TextStyle(
-                                fontFamily: 'Montserrat-Black',
 
-                                fontSize: 12,color: VtmGrey
-                            ),)
-                          ],
-                        ),
-                        SizedBox(height: 10,),
                         Expanded(
-                          child: Container(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(height: 15,),
+                                _getPostImage(),
+                                SizedBox(height: 15,),
+                                Text(post.title.rendered.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontFamily: 'Montserrat-Black'
+                                  ),),
+                                SizedBox(height: 5,),
+                                Row(
+                                  children: [
+                                    Text(post.author.name.toString(),style: TextStyle(
+                                        fontFamily: 'Montserrat-Black',
+                                        fontWeight: FontWeight.w600
+                                    ),),
+                                    Spacer(),
+                                    Text(post.date.replaceAll('T', ' '),style: TextStyle(
+                                        fontFamily: 'Montserrat-Black',
 
-                            width: MediaQuery.of(context).size.width,
-                            child: SingleChildScrollView(
-                              child: Html( data: post.content.rendered,linkStyle: TextStyle(
-                                  fontFamily: 'Montserrat-Black',
-                                fontSize: 16
-                              ),
-                                onLinkTap: (String url) {
-                                  _launchUrl(url);
-                                },),
+                                        fontSize: 12,color: VtmGrey
+                                    ),)
+                                  ],
+                                ),
+                                SizedBox(height: 10,),
+                                Container(
+
+                                  width: MediaQuery.of(context).size.width,
+                                  child: SingleChildScrollView(
+                                    child: Html( data: post.content.rendered,linkStyle: TextStyle(
+                                        fontFamily: 'Montserrat-Black',
+                                      fontSize: 16
+                                    ),
+                                      onLinkTap: (String url) {
+                                        _launchUrl(url);
+                                      },),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         )
