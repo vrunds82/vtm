@@ -20,15 +20,19 @@ class _BlogScreenState extends State<BlogScreen> {
   wp.WordPress wordPress = wp.WordPress(
     baseUrl: 'http://blog.vtm-stein.de/',
   );
+  var _wifiEnabled;
 
   test()async{
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         print('connected');
+        _wifiEnabled = true;
       }
     } on SocketException catch (_) {
       print('not connected');
+      _wifiEnabled = false;
+      Show_toast_Now("No Internet Connection", Colors.red);
     }
   }
 
@@ -85,6 +89,7 @@ class _BlogScreenState extends State<BlogScreen> {
                     future: _fetchPosts(),
                     builder: (BuildContext context,AsyncSnapshot<List<wp.Post>> snapshot){
                       if(snapshot.connectionState == ConnectionState.none){
+
                         return Container();
                       }
 
@@ -93,7 +98,8 @@ class _BlogScreenState extends State<BlogScreen> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      return ListView.builder(
+                      return _wifiEnabled?
+                      ListView.builder(
                           itemCount: 1,
                           itemBuilder: (BuildContext ctxt, int index) {
                             wp.Post post = snapshot.data[index];
@@ -149,7 +155,8 @@ class _BlogScreenState extends State<BlogScreen> {
                                 ),
                               ),
                             );
-                          });
+                          })
+                          :Center(child: Text("No Internet Connection"));
                     }
 
                 ),
@@ -171,7 +178,8 @@ class _BlogScreenState extends State<BlogScreen> {
                           child: SizedBox(),
                         );
                       }
-                      return ListView.builder(
+                      return _wifiEnabled?
+                      ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext ctxt, int index) {
                             wp.Post post = snapshot.data[index];
@@ -272,7 +280,7 @@ class _BlogScreenState extends State<BlogScreen> {
                                 ],
                               ),
                             );
-                          });
+                          }):SizedBox();
                     }
 
                   ),

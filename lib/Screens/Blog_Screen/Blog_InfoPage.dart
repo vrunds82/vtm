@@ -52,7 +52,7 @@ class _BlogInfoState extends State<BlogInfo> {
       key: _scaffoldKey,
       drawer: CustomDrawer(),
      // bottomNavigationBar: CustomBottomBar(),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start,

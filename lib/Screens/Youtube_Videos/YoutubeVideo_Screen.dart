@@ -5,6 +5,7 @@ import 'package:vtm/Models/Video_Model.dart';
 import 'package:vtm/Screens/Play_Video.dart';
 import 'package:vtm/Services/Api_Services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'dart:io';
 
 class Youtubevidepage extends StatefulWidget {
   VoidCallback refreshScreen;
@@ -23,10 +24,25 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
   YoutubePlayerController _controller;
   Channel _channel;
   bool _isLoading = false;
+  var _wifiEnabled;
 
+  test()async{
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        _wifiEnabled = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      _wifiEnabled = false;
+      Show_toast_Now("No Internet Connection", Colors.red);
+    }
+  }
   @override
   void initState() {
     super.initState();
+    test();
     _initChannel();
   }
 
