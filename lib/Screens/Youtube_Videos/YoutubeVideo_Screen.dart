@@ -168,7 +168,8 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                         video.title,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 13.0,
+                          fontFamily: 'Montserrat-Regular',
+                          fontSize: 14.0,
                         ),
                       ),
                     ),

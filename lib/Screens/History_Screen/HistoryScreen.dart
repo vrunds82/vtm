@@ -524,6 +524,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                               child: SingleChildScrollView(
                                 child: Text(document['comment'],style: TextStyle(
                                     color: VtmGrey.withOpacity(1.0),fontSize: 14,
+                                    fontFamily: 'Montserrat-Regular',
                                     fontWeight: FontWeight.w500
                                 ),),
                               ),

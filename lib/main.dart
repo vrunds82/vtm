@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'Screens/Blog_Screen/Blog_InfoPage.dart';
 import 'Screens/Blog_Screen/Blog_Page.dart';
 import 'Screens/Bottom_Bar/CustomBottomBarPage.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
       fontFamily: "Montserrat-SemiBold",
+        appBarTheme: AppBarTheme(
+          color: VtmWhite,iconTheme: IconThemeData(color: VtmBlue)
+        )
 
       ),
 

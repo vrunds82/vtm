@@ -100,6 +100,8 @@ class CustomBottomBar extends StatefulWidget {
 }
 
 class _CustomBottomBarState extends State<CustomBottomBar> {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -221,7 +223,52 @@ class CustomDrawer extends StatelessWidget {
 
     double gapBetweenTiles = MediaQuery.of(context).size.width*0.08;
 
+    Legaldialog(BuildContext context) async {
 
+      return showDialog(
+
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(child: Text('Legal')),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+              ),
+              content: Container(
+                decoration: BoxDecoration(
+                  //color: VtmLightBlue.withOpacity(0.2),
+
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(40))),
+                height: MediaQuery.of(context).size.height * 0.35,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Divider(color: VtmGrey.withOpacity(0.9),thickness: 1,),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Text("Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, \n"
+                        "graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have \n"
+                        "scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.")
+
+
+                  ],
+                ),
+              ),
+              /*actions: <Widget>[
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  createRecord();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],*/
+            );
+          });
+    }
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
       child: Drawer(
@@ -408,23 +455,29 @@ class CustomDrawer extends StatelessWidget {
                       height: gapBetweenTiles,
                       thickness: 1,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          legalImage,
-                          height: MediaQuery.of(context).size.height * 0.025,
-                          width: MediaQuery.of(context).size.width * 0.025,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Legal',
-                          style: TextStyle(
-                              fontFamily: 'MontserratSubrayada-Bold',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    GestureDetector(
+                      onTap: (){
+
+                        Legaldialog(context);
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            legalImage,
+                            height: MediaQuery.of(context).size.height * 0.025,
+                            width: MediaQuery.of(context).size.width * 0.025,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Legal',
+                            style: TextStyle(
+                                fontFamily: 'MontserratSubrayada-Bold',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

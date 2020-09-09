@@ -51,11 +51,22 @@ class _BlogInfoState extends State<BlogInfo> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(),
+     /*appBar: AppBar(
+       title: Center(
+         child: Text("MORE",style: TextStyle(
+             fontSize: 18,
+             color: VtmBlue,
+             //fontWeight: FontWeight.bold,
+             fontFamily: 'Montserrat-Black'
+
+         ),),
+       ),
+     ),*/
      // bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CustomAppBar(menuiconclr: VtmBlue,
@@ -68,42 +79,54 @@ class _BlogInfoState extends State<BlogInfo> {
 
               SizedBox(height: 15,),
               _getPostImage(),
-              SizedBox(height: 5,),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(post.title.rendered.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      fontFamily: 'Montserrat-Black'
-                    ),),
-                    SizedBox(height: 3,),
-                    Row(
+              SizedBox(height: 15,),
+              Expanded(
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(post.author.name.toString(),style: TextStyle(
-                          fontWeight: FontWeight.w600
+                        Text(post.title.rendered.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          fontFamily: 'Montserrat-Black'
                         ),),
-                        Spacer(),
-                        Text(post.date.replaceAll('T', ' '),style: TextStyle(
-                          fontSize: 12,color: VtmGrey
-                        ),)
+                        SizedBox(height: 5,),
+                        Row(
+                          children: [
+                            Text(post.author.name.toString(),style: TextStyle(
+                                fontFamily: 'Montserrat-Black',
+                                fontWeight: FontWeight.w600
+                            ),),
+                            Spacer(),
+                            Text(post.date.replaceAll('T', ' '),style: TextStyle(
+                                fontFamily: 'Montserrat-Black',
+
+                                fontSize: 12,color: VtmGrey
+                            ),)
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Expanded(
+                          child: Container(
+
+                            width: MediaQuery.of(context).size.width,
+                            child: SingleChildScrollView(
+                              child: Html( data: post.content.rendered,linkStyle: TextStyle(
+                                  fontFamily: 'Montserrat-Black',
+                                fontSize: 16
+                              ),
+                                onLinkTap: (String url) {
+                                  _launchUrl(url);
+                                },),
+                            ),
+                          ),
+                        )
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    Container(
-
-                      width: MediaQuery.of(context).size.width,
-                      child: SafeArea(
-                        child: Html( data: post.content.rendered,
-                          onLinkTap: (String url) {
-                            _launchUrl(url);
-                          },),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               )
             ],
