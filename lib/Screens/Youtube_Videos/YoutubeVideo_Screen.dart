@@ -20,6 +20,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
   //api key:AIzaSyAAk_8rXF2rK_Mll3Hhi50UYjUEMzZLZtM
 
+  String currentVideoTitle="";
   String videoID;
   YoutubePlayerController _controller;
   Channel _channel;
@@ -128,6 +129,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
         onTap: (){
 
           videoID=video.id;
+          currentVideoTitle = video.title;
           _initYoutubePlayer();
 
         //   Navigator.push(
@@ -224,7 +226,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomAppBar(
-                    text: "YT VIDEO",
+                    text: "VIDEOS",
                     menuiconclr: VtmBlue,
                     addiconclr: Colors.transparent,
                     clickonmenuicon: () {
@@ -236,12 +238,21 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                 SizedBox(
                   height: 10,
                 ),
-                videoID!=null?YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                  onReady: () {
-                    print('Player is ready.');
-                  },
+                videoID!=null?Column(
+                  children: [
+                    YoutubePlayer(
+                      controller: _controller,
+                      showVideoProgressIndicator: true,
+                      onReady: () {
+                        print('Player is ready.');
+                      },
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(currentVideoTitle,style: TextStyle(fontWeight: FontWeight.bold,color: VtmBlue),),
+                    )
+                  ],
                 ):SizedBox(),
                 _channel != null
                     ? NotificationListener<ScrollNotification>(

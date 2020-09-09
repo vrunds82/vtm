@@ -46,15 +46,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             Container(height: 200,width: 200,
                 child: SvgPicture.asset(imagename,color: VtmBlue,)),
             Spacer(),
-            Text("VTM",style: TextStyle(
+            Text("VTM Dr. Stein",style: TextStyle(
               color: VtmBlue,fontWeight: FontWeight.bold,
               fontSize: 30
             ),),
             SizedBox(height: 2,),
-            Text("Dr.Stein",style: TextStyle(
+          /*  Text("Dr.Stein",style: TextStyle(
                 color: VtmBlue,fontWeight: FontWeight.bold,
                 fontSize: 20
-            ),),
+            ),),*/
             Spacer(),
           ],
         ),

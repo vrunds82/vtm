@@ -87,48 +87,50 @@ class _BlogInfoState extends State<BlogInfo> {
                       children: [
 
                         Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(height: 15,),
-                                _getPostImage(),
-                                SizedBox(height: 15,),
-                                Text(post.title.rendered.toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      fontFamily: 'Montserrat-Black'
-                                  ),),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text(post.author.name.toString(),style: TextStyle(
-                                        fontFamily: 'Montserrat-Black',
-                                        fontWeight: FontWeight.w600
+                          child: Scrollbar(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 15,),
+                                  _getPostImage(),
+                                  SizedBox(height: 15,),
+                                  Text(post.title.rendered.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        fontFamily: 'MontserratSubrayada-Bold'
                                     ),),
-                                    Spacer(),
-                                    Text(post.date.replaceAll('T', ' '),style: TextStyle(
-                                        fontFamily: 'Montserrat-Black',
+                                  SizedBox(height: 5,),
+                                  Row(
+                                    children: [
+                                      Text(post.author.name.toString(),style: TextStyle(
+                                          fontFamily: 'MontserratSubrayada-Bold',
+                                          fontWeight: FontWeight.w600
+                                      ),),
+                                      Spacer(),
+                                      Text(post.date.substring(0,10),style: TextStyle(
+                                          fontFamily: 'MontserratSubrayada-Bold',
 
-                                        fontSize: 12,color: VtmGrey
-                                    ),)
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Container(
-
-                                  width: MediaQuery.of(context).size.width,
-                                  child: SingleChildScrollView(
-                                    child: Html( data: post.content.rendered,linkStyle: TextStyle(
-                                        fontFamily: 'Montserrat-Black',
-                                      fontSize: 16
-                                    ),
-                                      onLinkTap: (String url) {
-                                        _launchUrl(url);
-                                      },),
+                                          fontSize: 12,color: VtmGrey
+                                      ),)
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 10,),
+                                  Container(
+
+                                    width: MediaQuery.of(context).size.width,
+                                    child: SingleChildScrollView(
+                                      child: Html( data: post.content.rendered,linkStyle: TextStyle(
+                                          fontFamily: 'MontserratSubrayada-Bold',
+                                        fontSize: 16
+                                      ),
+                                        onLinkTap: (String url) {
+                                          _launchUrl(url);
+                                        },),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )

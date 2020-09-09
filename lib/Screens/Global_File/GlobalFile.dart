@@ -11,7 +11,7 @@ const VtmRed = Colors.red;
 const VtmBlack = Colors.black;
 
 class Global {
-  static int currentPageIndex = 0;
+  static int currentPageIndex = 1;
   static double iconSize = 0.07;
 }
 
@@ -123,23 +123,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  print(Global.currentPageIndex);
-                  Global.currentPageIndex = 0;
-                  // Navigator.of(context).pushReplacementNamed('InfoPage');
-                  setState(() {});
-                  widget.click();
-                },
-                child: SvgPicture.asset(
-                  'assets/images/info.svg',
-                  color: Global.currentPageIndex == 0 ? VtmBlue : VtmGrey,
-                  height: MediaQuery.of(context).size.width * Global.iconSize,
-                  width: MediaQuery.of(context).size.width * Global.iconSize,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              /*Spacer(),*/
-              GestureDetector(
-                onTap: () {
                   Global.currentPageIndex = 1;
                   // Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
                   setState(() {});
@@ -153,17 +136,17 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-              /*Spacer(),*/
               GestureDetector(
                 onTap: () {
-                  Global.currentPageIndex = 2;
-                  // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
+                  print(Global.currentPageIndex);
+                  Global.currentPageIndex = 0;
+                  // Navigator.of(context).pushReplacementNamed('InfoPage');
                   setState(() {});
                   widget.click();
                 },
                 child: SvgPicture.asset(
-                  'assets/images/youtube.svg',
-                  color: Global.currentPageIndex == 2 ? VtmBlue : VtmGrey,
+                  'assets/images/info.svg',
+                  color: Global.currentPageIndex == 0 ? VtmBlue : VtmGrey,
                   height: MediaQuery.of(context).size.width * Global.iconSize,
                   width: MediaQuery.of(context).size.width * Global.iconSize,
                   fit: BoxFit.contain,
@@ -188,6 +171,23 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               /*Spacer(),*/
               GestureDetector(
                 onTap: () {
+                  Global.currentPageIndex = 2;
+                  // Navigator.of(context).pushReplacementNamed('YoutubeVideoPage');
+                  setState(() {});
+                  widget.click();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/youtube.svg',
+                  color: Global.currentPageIndex == 2 ? VtmBlue : VtmGrey,
+                  height: MediaQuery.of(context).size.width * Global.iconSize,
+                  width: MediaQuery.of(context).size.width * Global.iconSize,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              /*Spacer(),*/
+              /*Spacer(),*/
+              GestureDetector(
+                onTap: () {
                   Global.currentPageIndex = 4;
                   //Navigator.of(context).pushReplacementNamed('Musicplayer_VtmHome');
                   setState(() {});
@@ -201,7 +201,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   fit: BoxFit.contain,
                 ),
               ),
-
             ],
           ),
         ),
@@ -290,11 +289,11 @@ class CustomDrawer extends StatelessWidget {
                 title: Column(
                   children: [
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.width * 0.3,
                         width: MediaQuery.of(context).size.width * 0.3,
                         decoration: new BoxDecoration(
                             image: new DecorationImage(
-                              image: new AssetImage("assets/images/songcover.jpeg"),
+                              image: new AssetImage("assets/images/bgForPlayer.png"),
                               fit: BoxFit.cover,
                             ))),
                     SizedBox(

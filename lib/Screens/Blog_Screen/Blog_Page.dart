@@ -258,7 +258,7 @@ class _BlogScreenState extends State<BlogScreen> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                                post.date.toString().replaceAll('T', ' '),
+                                                                post.date.substring(0,10),
                                                             style: TextStyle(fontSize: 14,
                                                                 fontWeight: FontWeight.bold),
                                                           ),
