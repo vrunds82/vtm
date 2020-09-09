@@ -6,6 +6,7 @@ import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:share/share.dart';
 
 
 class HistoryPage extends StatefulWidget {
@@ -25,6 +26,11 @@ class _HistoryPageState extends State<HistoryPage> {
 
   String ratingvalue;
   DateTime selectedDate = DateTime.now();
+
+
+  sharedata(){
+    Share.share("text");
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -170,7 +176,12 @@ class _HistoryPageState extends State<HistoryPage> {
                   RaisedButton(
                     child: new Text('SUBMIT'),
                     onPressed: () {
+                      print(rating);
+                      print(ratingvalue);
+                      print(comment);
                       createRecord();
+                      comment.text="";
+
                       Navigator.of(context).pop();
                     },
                   )
@@ -285,6 +296,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     return Text("Loading..");
                   }
                   return Expanded(
+
                     child: ListView.builder(
                       itemCount: snapshot.data.documents.length,
                       itemBuilder: (context, index) {
@@ -457,6 +469,71 @@ class _HistoryPageState extends State<HistoryPage> {
 Widget _buildList(BuildContext context, DocumentSnapshot document) {
   bool isFavorite = false;
   var rating = double.parse(document['rating']);
+  sharedata(){
+    Share.share("text");
+  }
+
+  void Deletedialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        Firestore firestore = Firestore.instance;
+
+        return AlertDialog(
+          title: new Text("Delete"),
+          content: new Text("Are You Sure Want To Delete?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 20
+                    ),
+                    child:  GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).pop();
+                        },child: new Text("Cancel")),
+                  ),
+
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+            FlatButton(
+              child: Row(
+                children: <Widget>[
+
+                  GestureDetector(
+                      onTap: () async {
+
+                        await firestore.collection("review").document(document.documentID).delete();
+                        Show_toast_Now("Deleted Successfully", Colors.red);
+                        Navigator.of(context).pop();
+
+                        // Navigator.of(context).pushNamed('dashboard');
+                      },child: new Text("Ok")),
+                ],
+              ),
+              onPressed: () async{
+                await firestore.collection("review").document(document.documentID).delete();
+                Show_toast_Now("Deleted Successfully", Colors.red);
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   return Column(
     children: <Widget>[
@@ -559,13 +636,20 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                      height: 20,
-                      width: 20,
-                      child: SvgPicture.asset(
-                        'assets/images/dustbin.svg',
-                        color: VtmBlack,
-                      )),
+
+                  GestureDetector(
+                    onTap: (){
+                      Deletedialog(context);
+                    },
+                    child: Container(
+                        height: 20,
+                        width: 20,
+                        child: SvgPicture.asset(
+                          'assets/images/dustbin.svg',
+                          color: VtmBlack,
+                        )),
+                  ),
+
                   SizedBox(
                     width: 40,
                   ),
@@ -586,13 +670,18 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                   SizedBox(
                     width: 40,
                   ),
-                  Container(
-                      height: 20,
-                      width: 20,
-                      child: SvgPicture.asset(
-                        'assets/images/share.svg',
-                        color: VtmGrey,
-                      )),
+                  GestureDetector(
+                    onTap: (){
+                      sharedata();
+                    },
+                    child: Container(
+                        height: 20,
+                        width: 20,
+                        child: SvgPicture.asset(
+                          'assets/images/share.svg',
+                          color: VtmGrey,
+                        )),
+                  ),
                 ],
               )
             ],

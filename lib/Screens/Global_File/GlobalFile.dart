@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const VtmBlue = Colors.blue;
 const VtmGrey = Colors.grey;
@@ -434,4 +435,16 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Show_toast_Now(String msg,Color color){
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb	: 1,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0
+  );
 }
