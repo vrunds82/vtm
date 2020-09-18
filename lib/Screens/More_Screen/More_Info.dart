@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vtm/Config/Constants.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:seekbar/seekbar.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -25,7 +26,7 @@ class _MorePageState extends State<MorePage> {
     new GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      appBar: AppBar(title: Text("More"),),
+      appBar: AppBar(title: Text(MoreTitle??"More"),),
       key: _scaffoldKey,
       drawer: CustomDrawer(
         refresh: widget.refreshScreen,

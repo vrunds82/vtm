@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vtm/Screens/MusicPlayer_Home/VtmHome.dart';
+import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
 
-const VtmBlue = Colors.blue;
+const VtmBlue = Color(0xff2a398a);
 const VtmGrey = Colors.grey;
 const VtmLightBlue = Colors.lightBlueAccent;
 const VtmWhite = Colors.white;
 const VtmRed = Colors.red;
 const VtmBlack = Colors.black;
+const keysBackground = Color(0xffc5d5ee);
+const VtmInActiveColor  = Color(0xff727cc5);
 
 class Global {
   static int currentPageIndex = 1;
   static double iconSize = 0.07;
+  static bool fullScreenPlayer=false;
+  static wp.Post currentSelectedPost;
+  static Future<List<wp.Post>> myPOSTs;
 }
 
 class CustomAppBar extends StatelessWidget {
@@ -22,6 +28,8 @@ class CustomAppBar extends StatelessWidget {
   final Color menuiconclr;
   final VoidCallback clickonmenuicon;
   final VoidCallback clickonmoreicon;
+  final bool back;
+  final VoidCallback onBack;
 
   final String addImage = 'assets/images/more.svg';
   final String menuImage = 'assets/images/menu.svg';
@@ -32,52 +40,50 @@ class CustomAppBar extends StatelessWidget {
       this.addiconclr,
       this.menuiconclr,
       this.clickonmenuicon,
-      this.clickonmoreicon});
+      this.clickonmoreicon,this.back,this.onBack});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                      height: MediaQuery.of(context).size.width * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      child: GestureDetector(
-                          onTap: clickonmenuicon,
-                          child: SvgPicture.asset(
-                            menuImage,
-                            color: menuiconclr,
-                          ))),
-                  Spacer(),
-                  Text(
-                    text,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: VtmBlue,
-                        //fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat-Black'),
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(25,20,25,0),
+          child: Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                    height: MediaQuery.of(context).size.width * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.06,
+                    child: GestureDetector(
+                        onTap: clickonmenuicon,
+                        child: SvgPicture.asset(
+                          menuImage,
+                          color: menuiconclr,
+                        ))),
+                Spacer(),
+                Text(
+                  text,
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: VtmBlue,
+                      //fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat-Black'),
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: clickonmoreicon,
+                  child: SvgPicture.asset(
+                    addImage,
+                    height: MediaQuery.of(context).size.width * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.06,
+                    color: addiconclr,
                   ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: clickonmoreicon,
-                    child: SvgPicture.asset(
-                      addImage,
-                      height: MediaQuery.of(context).size.width * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      color: addiconclr,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -195,7 +201,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                 },
                 child: SvgPicture.asset(
                   moreInfo,
-                  color: Global.currentPageIndex == 4 ? VtmBlue:VtmGrey,
+                  color: Global.currentPageIndex == 4 ||Global.currentPageIndex == 5 ? VtmBlue:VtmGrey,
                   height: MediaQuery.of(context).size.width * Global.iconSize,
                   width: MediaQuery.of(context).size.width * Global.iconSize,
                   fit: BoxFit.contain,
@@ -303,7 +309,8 @@ class CustomDrawer extends StatelessWidget {
                       "The Relief of Pain",
                       style: TextStyle(
                           fontFamily: 'Montserrat-SemiBold',
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.width*0.04),
                     ),
                     SizedBox(
                       height: 3,
@@ -337,7 +344,8 @@ class CustomDrawer extends StatelessWidget {
                             'Player',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),
@@ -364,7 +372,8 @@ class CustomDrawer extends StatelessWidget {
                             'Infos',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),
@@ -391,7 +400,8 @@ class CustomDrawer extends StatelessWidget {
                             'History',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),
@@ -418,7 +428,8 @@ class CustomDrawer extends StatelessWidget {
                             'Videos',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),
@@ -445,7 +456,8 @@ class CustomDrawer extends StatelessWidget {
                             'More',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),
@@ -473,7 +485,8 @@ class CustomDrawer extends StatelessWidget {
                             'Legal',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width*0.04),
                           ),
                         ],
                       ),

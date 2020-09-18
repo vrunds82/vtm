@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:vtm/Config/Constants.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:vtm/Models/Channel_Model.dart';
 import 'package:vtm/Models/Video_Model.dart';
@@ -22,10 +25,22 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
   String currentVideoTitle="";
   String videoID;
-  YoutubePlayerController _controller;
+  YoutubePlayerController _controller ;
   Channel _channel;
   bool _isLoading = false;
+  double CurrentValue=0;
+
   var _wifiEnabled;
+
+
+  _launchURL() async {
+    const url = 'https://www.youtube.com/user/VTMStein';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   test()async{
     try {
@@ -37,7 +52,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
     } on SocketException catch (_) {
       print('not connected');
       _wifiEnabled = false;
-      Show_toast_Now("No Internet Connection", Colors.red);
+      Show_toast_Now(noInterNet??"No Internet Connection", Colors.red);
     }
   }
   @override
@@ -70,7 +85,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
   _buildProfileInfo() {
     return Container(
-      margin: EdgeInsets.all(20.0),
+      margin: EdgeInsets.all(15.0),
       padding: EdgeInsets.all(20.0),
       height: 100.0,
       decoration: BoxDecoration(
@@ -97,23 +112,42 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  _channel.title,
+                  doctorName??"VTM Dr. Stein",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: VtmBlue,
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  '${_channel.subscriberCount} subscribers',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+                SizedBox(height: 10,),
+              GestureDetector(
+                onTap: (){
+                  _launchURL();
+                },
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/link.svg',
+                      color: Global.currentPageIndex == 1 ? VtmBlue : VtmGrey,
+                      height: MediaQuery.of(context).size.width * Global.iconSize-10,
+                      width: MediaQuery.of(context).size.width * Global.iconSize-10,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(width: 10,),
+
+                    Text(
+                        visitOurYoutubeChannel??'Visit our youtube channel',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
                 ),
+              ),
               ],
             ),
           )
@@ -211,22 +245,48 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
         new GlobalKey<ScaffoldState>();
 
     return Scaffold(
+      backgroundColor: Global.fullScreenPlayer?Colors.black:Colors.white,
       key: _scaffoldKey,
       drawer: CustomDrawer(
         refresh: widget.refreshScreen,
       ),
       //bottomNavigationBar: CustomBottomBar(),
 
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-          child: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomAppBar(
-                    text: "VIDEOS",
+      body: YoutubePlayerBuilder(
+        onEnterFullScreen: (){
+          _controller.pause();
+        Global.fullScreenPlayer=true;
+        Future.delayed(Duration(seconds: 2),(){
+          _controller.play();
+        });
+
+        widget.refreshScreen();
+      },onExitFullScreen: (){
+        Global.fullScreenPlayer=false;
+        setState(() {
+
+        });
+        widget.refreshScreen();
+        _controller.play();
+      },player:   YoutubePlayer(
+        width: MediaQuery.of(context).size.width,
+        aspectRatio:2.0,
+        controller: _controller,
+
+
+
+        onReady: () {
+          print('Player is ready.');
+        },
+      ),builder: (context,player){
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  CustomAppBar(
+                    text: videosTitle??"VIDEOS",
                     menuiconclr: VtmBlue,
                     addiconclr: Colors.transparent,
                     clickonmenuicon: () {
@@ -234,62 +294,58 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                       _scaffoldKey.currentState.openDrawer();
                     },
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                videoID!=null?Column(
-                  children: [
-                    YoutubePlayer(
-                      controller: _controller,
-                      showVideoProgressIndicator: true,
-                      onReady: () {
-                        print('Player is ready.');
-                      },
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(currentVideoTitle,style: TextStyle(fontWeight: FontWeight.bold,color: VtmBlue),),
-                    )
-                  ],
-                ):SizedBox(),
-                _channel != null
-                    ? NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollDetails) {
-                    if (!_isLoading &&
-                        _channel.videos.length != int.parse(_channel.videoCount) &&
-                        scrollDetails.metrics.pixels ==
-                            scrollDetails.metrics.maxScrollExtent) {
-                      _loadMoreVideos();
-                    }
-                    return false;
-                  },
-                  child: Expanded(
-                    child: ListView.builder(
-                      itemCount: 1 + _channel.videos.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == 0) {
-                          return _buildProfileInfo();
+                  SizedBox(
+                    height: 10,
+                  ),
+                  videoID!=null && !Global.fullScreenPlayer?Column(
+                    children: [
+                    player,
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(currentVideoTitle,style: TextStyle(fontWeight: FontWeight.bold,color: VtmBlue),),
+                      )
+                    ],
+                  ):SizedBox(),
+                  _channel != null
+                      ? NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollDetails) {
+                      if (!_isLoading &&
+                          _channel.videos.length != int.parse(_channel.videoCount) &&
+                          scrollDetails.metrics.pixels ==
+                              scrollDetails.metrics.maxScrollExtent) {
+                        if(_channel.videos.length<6) {
+                          _loadMoreVideos();
                         }
-                        Video video = _channel.videos[index - 1];
-                        return _buildVideo(video);
-                      },
+                      }
+                      return false;
+                    },
+                    child: Expanded(
+                      child: ListView.builder(
+                        itemCount: (1 + _channel.videos.length)<6?(1 + _channel.videos.length):6,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index == 0) {
+                            return _buildProfileInfo();
+                          }
+                          Video video = _channel.videos[index - 1];
+                          return _buildVideo(video);
+                        },
+                      ),
+                    ),
+                  )
+                      : Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
                     ),
                   ),
-                )
-                    : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor, // Red
-                    ),
-                  ),
-                ),
-              ],
+
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },),
     );
   }
 }

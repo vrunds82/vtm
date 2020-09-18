@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vtm/Config/Constants.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:async';
@@ -57,9 +58,6 @@ class _HistoryPageState extends State<HistoryPage> {
     print(ref.firestore);
   }
 
-
-
-
   _displayDialog(BuildContext context) async {
     var rating = 3.0;
     bool isFavorite = false;
@@ -68,7 +66,7 @@ class _HistoryPageState extends State<HistoryPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Center(child: Text('Give Review')),
+            title: Center(child: Text(didTheSessionHelpText??'Did the session help?',style: TextStyle(color: VtmBlue),)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))
             ),
@@ -78,8 +76,9 @@ class _HistoryPageState extends State<HistoryPage> {
 
                   borderRadius:
                   BorderRadius.all(Radius.circular(40))),
-              height: MediaQuery.of(context).size.height * 0.35,
+
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Divider(color: VtmGrey.withOpacity(0.9),thickness: 1,),
@@ -97,12 +96,21 @@ class _HistoryPageState extends State<HistoryPage> {
 
                     ],
                   ),*/
-
+                 /* Text(
+                    "Did the session help?",
+                    style: TextStyle(
+                        color: VtmGrey.withOpacity(0.9),
+                        fontFamily: 'Montserrat-Regular',
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),*/
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Program Started: ",
+                        programStartedText??"Program Started: ",
                         style: TextStyle(
                           fontSize: 14,
                           color:VtmGrey.withOpacity(0.9),
@@ -117,24 +125,17 @@ class _HistoryPageState extends State<HistoryPage> {
                               fontWeight: FontWeight.w600))
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Did the session help?",
-                    style: TextStyle(
-                        color: VtmGrey.withOpacity(0.9),
-                        fontFamily: 'Montserrat-Regular',
-                        fontWeight: FontWeight.w600),
-                  ),
+
+
                   SizedBox(
                     height: 10,
                   ),
                   SmoothStarRating(
+                    color: VtmBlue,
                     rating: rating,
                     borderColor: VtmGrey,
                     isReadOnly: false,
-                    size: 30,
+                    size: 40,
                     filledIconData: Icons.star,
                     //halfFilledIconData: Icons.star_half,
                     defaultIconData: Icons.star_border,
@@ -168,7 +169,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                 width: 1.0),
                           ),
                           hintText:
-                          "Your personal remark about the session",
+                          historyHintText??"Your personal remark about the session",
                           hintStyle: TextStyle(
                               color: VtmGrey.withOpacity(0.9),
                               fontFamily: 'Montserrat-Regular',
@@ -291,7 +292,7 @@ class _HistoryPageState extends State<HistoryPage> {
       //bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Column(
             children: [
               CustomAppBar(
@@ -372,8 +373,8 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
         Firestore firestore = Firestore.instance;
 
         return AlertDialog(
-          title: new Text("Delete"),
-          content: new Text("Are You Sure Want To Delete?"),
+          title: new Text("Delete",style: TextStyle(color: VtmBlue),),
+          content: new Text("Do you really want to delete this history entry?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -386,7 +387,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                     child:  GestureDetector(
                         onTap: (){
                           Navigator.of(context).pop();
-                        },child: new Text("Cancel")),
+                        },child: new Text("Cancel",style: TextStyle(color: VtmBlue))),
                   ),
 
                 ],
@@ -408,7 +409,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                         Navigator.of(context).pop();
 
                         // Navigator.of(context).pushNamed('dashboard');
-                      },child: new Text("Ok")),
+                      },child: new Text("Ok",style: TextStyle(color: VtmBlue))),
                 ],
               ),
               onPressed: () async{
@@ -436,7 +437,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                 color: VtmWhite,
                 borderRadius:
                 BorderRadius.all(Radius.circular(16))),
-            height: MediaQuery.of(context).size.height * 0.37,
+
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -444,12 +445,22 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                   SizedBox(
                     height: 20,
                   ),
-
+                  Text(
+                    didTheSessionHelpText??"Did the session help ?",
+                    style: TextStyle(
+                        color: VtmBlue,
+                        fontSize: 16,
+                        fontFamily: 'Montserrat-Regular',
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Program Started: ",
+                        programStartedText??"Program Started: ",
                         style: TextStyle(
                           color: VtmGrey.withOpacity(0.9),
                           fontSize: 16,
@@ -467,18 +478,9 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    "Did the session help ?",
-                    style: TextStyle(
-                        color: VtmGrey.withOpacity(0.9),
-                        fontSize: 16,
-                        fontFamily: 'Montserrat-Regular',
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
+
                   SmoothStarRating(
+                    color: VtmBlue,
                     rating:rating,
                     borderColor: VtmGrey.withOpacity(0.9),
                     isReadOnly: true,
@@ -511,7 +513,6 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                         SizedBox(height: 10,),
                         SingleChildScrollView(
                           child: Container(
-                            height: 100,
                             width: 400,
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -548,11 +549,11 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                           Deletedialog(context);
                         },
                         child: Container(
-                            height: 20,
-                            width: 20,
+                            height: MediaQuery.of(context).size.width * Global.iconSize,
+                            width: MediaQuery.of(context).size.width * Global.iconSize,
                             child: SvgPicture.asset(
                               'assets/images/dustbin.svg',
-                              color: VtmBlack,
+                              color: VtmGrey,
                             )),
                       ),
 
@@ -569,8 +570,10 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                         _updateData();
                       },
                             child: Icon(
+
                         Icons.favorite,
                         color: Colors.red,
+                              size: MediaQuery.of(context).size.width * Global.iconSize+5,
                       ),
                           )
                           : GestureDetector(
@@ -581,7 +584,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                         },
                             child: Icon(
                         Icons.favorite,
-                        color: VtmGrey,
+                        color: VtmGrey,size: MediaQuery.of(context).size.width * Global.iconSize+5,
                       ),
                           ),
                       SizedBox(
@@ -592,15 +595,18 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                           sharedata();
                         },
                         child: Container(
-                            height: 20,
-                            width: 20,
+                            height: MediaQuery.of(context).size.width * Global.iconSize,
+                            width: MediaQuery.of(context).size.width * Global.iconSize,
                             child: SvgPicture.asset(
                               'assets/images/share.svg',
                               color: VtmGrey,
                             )),
                       ),
                     ],
-                  )
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

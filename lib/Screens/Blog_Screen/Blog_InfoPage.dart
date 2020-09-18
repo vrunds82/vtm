@@ -7,10 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class BlogInfo extends StatefulWidget {
-
+  VoidCallback refreshScreen;
   wp.Post post;
 
-  BlogInfo({this.post});
+  BlogInfo({this.post,this.refreshScreen});
 
 
 
@@ -24,7 +24,12 @@ class _BlogInfoState extends State<BlogInfo> {
     if (post.featuredMedia == null) {
       return SizedBox(height: 10,);
     } else {
-      return Image.network(post.featuredMedia.sourceUrl);
+      return Column(
+        children: [
+          Image.network(post.featuredMedia.sourceUrl),
+          SizedBox(height: 10,),
+        ],
+      );
     }
   }
 
@@ -40,7 +45,8 @@ class _BlogInfoState extends State<BlogInfo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    post = widget.post;
+    //post = widget.post;
+    post = Global.currentSelectedPost;
   }
 
 
@@ -49,63 +55,54 @@ class _BlogInfoState extends State<BlogInfo> {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
     return Scaffold(
+      drawer: CustomDrawer(refresh: widget.refreshScreen,),
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
-     /*appBar: AppBar(
-       title: Center(
-         child: Text("MORE",style: TextStyle(
-             fontSize: 18,
-             color: VtmBlue,
-             //fontWeight: FontWeight.bold,
-             fontFamily: 'Montserrat-Black'
-
-         ),),
-       ),
-     ),*/
-     // bottomNavigationBar: CustomBottomBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CustomAppBar(menuiconclr: VtmBlue,
-                text: "MORE",
-                addiconclr: Colors.transparent,
-                clickonmenuicon: (){
-                  print("clicked");
-                  _scaffoldKey.currentState.openDrawer();
-                },),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CustomAppBar(menuiconclr: VtmBlue,
+              text: "MORE",
+              addiconclr: Colors.transparent,
+              clickonmenuicon: (){
+                print("clicked");
+                _scaffoldKey.currentState.openDrawer();
+              },),
 
 
-              Expanded(
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
 
-                        Expanded(
-                          child: Scrollbar(
-                            child: SingleChildScrollView(
+            Expanded(
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+
+                      Expanded(
+                        child: Scrollbar(
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(15,0,15,0),
                               child: Column(
                                 children: <Widget>[
-                                  SizedBox(height: 15,),
+
                                   _getPostImage(),
-                                  SizedBox(height: 15,),
+
                                   Text(post.title.rendered.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
+                                        color: VtmBlue,
                                         fontFamily: 'MontserratSubrayada-Bold'
                                     ),),
                                   SizedBox(height: 5,),
-                                  Row(
+                                  /*Row(
                                     children: [
                                       Text(post.author.name.toString(),style: TextStyle(
                                           fontFamily: 'MontserratSubrayada-Bold',
-                                          fontWeight: FontWeight.w600
+                                          fontWeight: FontWeight.w600,
+                                        fontSize: 16,
                                       ),),
                                       Spacer(),
                                       Text(post.date.substring(0,10),style: TextStyle(
@@ -114,7 +111,7 @@ class _BlogInfoState extends State<BlogInfo> {
                                           fontSize: 12,color: VtmGrey
                                       ),)
                                     ],
-                                  ),
+                                  ),*/
                                   SizedBox(height: 10,),
                                   Container(
 
@@ -122,7 +119,7 @@ class _BlogInfoState extends State<BlogInfo> {
                                     child: SingleChildScrollView(
                                       child: Html( data: post.content.rendered,linkStyle: TextStyle(
                                           fontFamily: 'MontserratSubrayada-Bold',
-                                        fontSize: 16
+                                        fontSize: 20
                                       ),
                                         onLinkTap: (String url) {
                                           _launchUrl(url);
@@ -133,14 +130,14 @@ class _BlogInfoState extends State<BlogInfo> {
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

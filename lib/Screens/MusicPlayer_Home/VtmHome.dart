@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vtm/Config/Constants.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:seekbar/seekbar.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:vtm/Services/audioPlayer.dart';
 
 
 class VtmHomePage extends StatefulWidget {
@@ -21,26 +23,26 @@ class _VtmHomePageState extends State<VtmHomePage> {
   double currentValue = 0.0;
   double maxValue = 0.0;
   double _secondValue = 0.0;
-
   Timer _progressTimer;
   Timer _secondProgressTimer;
-
   bool _done = false;
-
   bool isplaying = false;
   Duration _duration = Duration();
   Duration _position = Duration();
   Duration maxDuration;
   double audioDuration;
-  AssetsAudioPlayer  assetsAudioPlayer = AssetsAudioPlayer();
+
 
 
 
   Future<void> initplayer()
   async {
-   await assetsAudioPlayer.open(Audio("assets/audio/audio_1.mp3"),autoStart: false,showNotification: true);
-    maxDuration= assetsAudioPlayer.current.value.audio.duration;
-    audioDuration = double.parse(maxDuration.inSeconds.toString());
+      maxDuration = CommonPlayer.assetsAudioPlayer.current.value.audio.duration;
+      audioDuration = double.parse(maxDuration.inSeconds.toString());
+      print("Audio :::::::::::::::::::::$maxDuration $audioDuration ${CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath}");
+      setState(() {
+
+      });
   }
 
   String localFilePath;
@@ -49,17 +51,23 @@ class _VtmHomePageState extends State<VtmHomePage> {
   Widget slider() {
 
 
-
-
+    bool scrolling=false;
+    double scrollingvalue=0;
 
     return StreamBuilder(
-        stream: assetsAudioPlayer.currentPosition,
+
+
+
+        stream: CommonPlayer.assetsAudioPlayer.currentPosition,
         builder: (context, asyncSnapshot) {
           final Duration duration = asyncSnapshot.data;
 
           if(duration!=null) {
             currentValue = duration.inSeconds.toDouble();
             maxValue = maxDuration!=null?maxDuration.inSeconds.toDouble():0;
+          }
+          if(duration!=null&&!scrolling){
+            scrollingvalue=duration.inSeconds.toDouble();
           }
 
           return Column(
@@ -68,19 +76,31 @@ class _VtmHomePageState extends State<VtmHomePage> {
                 children: [
                   Expanded(
                     child: Slider(
-
-
                         activeColor: VtmBlue,
                         inactiveColor: VtmBlue,
-                        value: currentValue,
+                        value:scrolling?scrollingvalue:currentValue,
                         min: 0.0,
                         max: audioDuration??100,
-                        onChanged: (double value) {
-                          setState(() {
-                            seekToSecond(value.toInt());
+                        onChangeStart: (v){
+                          print("Starting");
+                          scrolling=true;
+                        },
+                      onChanged: (value){
+                          scrollingvalue=value;
+                          currentValue=value;
+
+                      },
+                       onChangeEnd:  (double value) async {
+                          scrolling=false;
+                          currentValue=value;
+                           await CommonPlayer.assetsAudioPlayer.seek(Duration(seconds: value.toInt()));
+                           initplayer();
+                      //    print(value);
                             value = value;
-                          });
-                        }),
+
+                        },
+                    ),
+
                   ),
                 ],
               ),
@@ -88,7 +108,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Row(
                   children: [
-                    Text("${(currentValue~/60).toInt().toString().padLeft(2,"0")}:${(currentValue%60).toInt().toString().padLeft(2,"0")}"),
+                    Text(scrolling?"${(scrollingvalue~/60).toInt().toString().padLeft(2,"0")}:${(scrollingvalue%60).toInt().toString().padLeft(2,"0")}":"${(currentValue~/60).toInt().toString().padLeft(2,"0")}:${(currentValue%60).toInt().toString().padLeft(2,"0")}"),
                     Spacer(),
                     Text("${(maxValue~/60).toInt().toString().padLeft(2,"0")}:${(maxValue%60).toInt().toString().padLeft(2,"0")}")
                   ],
@@ -110,34 +130,26 @@ class _VtmHomePageState extends State<VtmHomePage> {
         });*/
   }
 
-  void seekToSecond(int second) {
-    Duration newDuration = Duration(seconds: second);
-  }
-
 
 
   @override
   void initState() {
-
     initplayer();
+
     super.initState();
   }
 
 
   @override
   void dispose() {
-    assetsAudioPlayer.dispose();
+  //  assetsAudioPlayer.dispose();
     super.dispose();
   }
 
   final String addImage = 'assets/images/menu.svg';
-
   final String menuImage = 'assets/images/menu.svg';
-
   final String forwardImage = 'assets/images/Forward.svg';
-
   final String backwardImage = 'assets/images/backward.svg';
-
   final String pauseImage = 'assets/images/Pause.svg';
   final String infoReadImage = 'assets/images/inforead.svg';
   final String repeatImage = 'assets/images/reapeat.svg';
@@ -193,7 +205,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                           children: <Widget>[
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(15, 10, 15, 20),
+                                                  const EdgeInsets.fromLTRB(25, 20, 15, 20),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -208,11 +220,11 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                           height: MediaQuery.of(context)
                                                                   .size
                                                                   .width *
-                                                              0.05,
+                                                              0.06,
                                                           width: MediaQuery.of(context)
                                                                   .size
                                                                   .width *
-                                                              0.05,
+                                                              0.06,
                                                           child: SvgPicture.asset(
                                                             menuImage,
                                                             color: VtmWhite,
@@ -245,13 +257,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                               height: MediaQuery.of(context).size.width * 0.12,
                                               width: MediaQuery.of(context).size.width * 0.55,
                                               decoration: BoxDecoration(
-                                                  color: VtmLightBlue,
-                                                  boxShadow: [
-                                                    new BoxShadow(
-                                                      color: Colors.black38,
-                                                      blurRadius: 15.0,
-                                                    ),
-                                                  ],
+                                                  color: keysBackground,
+
                                                   border: Border.all(
                                                       color: VtmLightBlue.withOpacity(0.2),
                                                       width: 0.0),
@@ -262,7 +269,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                   children: <Widget>[
                                                     GestureDetector(
                                                       onTap: (){
-                                                        print("back");
+                                                     //   ChangeAudio();
+                                                        CommonPlayer.assetsAudioPlayer.seekBy(Duration(seconds: -10));
                                                       },
                                                       child: SvgPicture.asset(
                                                         backwardImage,
@@ -277,7 +285,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                     ),
                                                     GestureDetector(
                                                       onTap: (){
-                                                        print("next");
+                                                        //ChangeAudio();
+                                                        CommonPlayer.assetsAudioPlayer.seekBy(Duration(seconds: 10));
                                                       },
                                                       child: SvgPicture.asset(
                                                         forwardImage,
@@ -308,8 +317,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                       shape: BoxShape.circle,
                                                       boxShadow: [
                                                         new BoxShadow(
-                                                          color: Colors.black38,
-                                                          blurRadius: 15.0,
+                                                          color: Colors.black26,
+                                                          blurRadius: 3.0,
                                                         ),
                                                       ],
                                                     ),
@@ -318,17 +327,14 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                     GestureDetector(
                                                       onTap: ()async{
                                                         print("sdada");
-                                                        if(isplaying){
-                                                          assetsAudioPlayer.pause();
+                                                        if(CommonPlayer.assetsAudioPlayer.isPlaying.value){
+                                                          CommonPlayer.assetsAudioPlayer.pause();
                                                         }else
                                                           {
-                                                            assetsAudioPlayer.play();
+                                                            CommonPlayer.assetsAudioPlayer.play();
                                                           }
-                                                        isplaying=!isplaying;
 
-                                                        setState(() {
-
-                                                        });
+                                                 initplayer();
                                                       },
                                                       child: Center(child:
                                                       ClipOval(
@@ -338,9 +344,9 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(16.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsets.only(left: isplaying==true?0:8.0),
+                                                                  padding: EdgeInsets.only(left: CommonPlayer.assetsAudioPlayer.isPlaying.value? 0:8.0),
                                                                   child: SvgPicture.asset(
-                                                                    isplaying==true? pauseImage:playImage,
+                                                                    CommonPlayer.assetsAudioPlayer.isPlaying.value? pauseImage:playImage,
                                                                     color: VtmBlue,
                                                                     fit: BoxFit.contain,
                                                                   ),
@@ -380,23 +386,48 @@ class _VtmHomePageState extends State<VtmHomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                              child: SvgPicture.asset(
-                            infoReadImage,
-                            color: VtmBlue,
-                            height: MediaQuery.of(context).size.width * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.05,
-                          )),
+                          GestureDetector(
+                            onTap: (){
+                              Global.currentPageIndex=0;
+                              widget.refreshScreen();
+                            },
+                            child: Container(
+                                child: SvgPicture.asset(
+                              infoReadImage,
+                              color: VtmBlue,
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            )),
+                          ),
                           SizedBox(
                             width: 40,
                           ),
-                          Container(
-                              child: SvgPicture.asset(
-                            repeatImage,
-                            color: VtmBlue,
-                            height: MediaQuery.of(context).size.width * 0.05,
-                            width: MediaQuery.of(context).size.width * 0.05,
-                          )),
+                          GestureDetector(
+                            onTap: () async {
+
+
+                              if(CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single)
+                                {
+                                  await CommonPlayer.assetsAudioPlayer
+                                      .setLoopMode(LoopMode.none);
+                                }else {
+                                await CommonPlayer.assetsAudioPlayer
+                                    .setLoopMode(LoopMode.single);
+                              }
+                              setState(() {
+
+                              });
+
+                              //CommonPlayer.assetsAudioPlayer.seek(Duration(seconds: 0));
+                            },
+                            child: Container(
+                                child: SvgPicture.asset(
+                              repeatImage,
+                              color: CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single?VtmBlue:VtmInActiveColor,
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            )),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -410,19 +441,20 @@ class _VtmHomePageState extends State<VtmHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "The Relief Of Pain",
+                                  CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/001.mp3"?trackone_text??"The Relief of Pain":introduction_text??"Introduction to program(german)",
+
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: VtmBlue,
-                                      fontSize: 16,
+                                      fontSize: 17,
                                       fontFamily: 'Montserrat-SemiBold'),
                                 ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
-                                  "Dr. Arnend Stein",
-                                  style: TextStyle(color: VtmBlue, fontSize: 14),
+                                  "Dr. Arnd Stein",
+                                  style: TextStyle(color: Colors.black, fontSize: 14),
                                 ),
                               ],
                             ),
@@ -444,29 +476,32 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal:15.0),
 
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                print("adad");
+                        child: GestureDetector(
+                          onTap: (){
+
+                              ChangeAudio();
                               //  advancedPlayer.pause();
-                              },
-                              child: Container(
+                            //Global.currentPageIndex=0;
+                            widget.refreshScreen();
+                          },
+                          child: Row(
+                            children: [
+                              Container(
                                   height: MediaQuery.of(context).size.width * 0.07,
                                   width: MediaQuery.of(context).size.width * 0.07,
                                   child: SvgPicture.asset(
                                     playIntroImage,
                                     color: VtmBlue,
                                   )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Introduction To Program ",
-                              style: TextStyle(color: VtmBlue, fontSize: 14),
-                            )
-                          ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                              CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"? trackone_text??"The Relief of Pain":introduction_text??"Introduction to program(german)",
+                                style: TextStyle(color: VtmBlue, fontSize: 17),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -479,7 +514,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                           GestureDetector(
                             onTap: () {},
                             child: Text(
-                              "BUY PRO VERSION TO HEAR FULL PROGRAM",
+                              buyProVersion_text??"BUY PRO VERSION TO HEAR FULL PROGRAM",
                               style: TextStyle(
                                   color: VtmRed,
                                   fontWeight: FontWeight.bold,
@@ -504,6 +539,24 @@ class _VtmHomePageState extends State<VtmHomePage> {
     );
   }
 
+
+  ChangeAudio() async {
+
+
+    print("Current Audio ::::::: ${CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?"Audio 1":"Audio 2"}");
+    print("Changing to ||||||||| ${CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?"Audio 1":"Audio 2"}");
+    await CommonPlayer.assetsAudioPlayer.playlistPlayAtIndex(CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?0:1);
+
+    initplayer();
+
+
+  }
+
+  //return Loop Icon
+replay(){
+
+
+}
 
 
 }

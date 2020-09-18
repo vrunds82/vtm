@@ -49,11 +49,13 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       Youtubevidepage(refreshScreen: refreshScreen,),
       HistoryPage(refreshScreen: refreshScreen,),
       BlogScreen(refreshScreen: refreshScreen,),
+      BlogInfo(refreshScreen: refreshScreen,)
+
     ];
 
 
     return Scaffold(
-    bottomNavigationBar: CustomBottomBar(click: (){
+    bottomNavigationBar:Global.fullScreenPlayer?SizedBox(): CustomBottomBar(click: (){
       refreshScreen();
     },),
     body: pageName[Global.currentPageIndex],

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
 
       debugShowCheckedModeBanner: false,
-      title: 'VTM Music Player',
+      title: 'The Relief of Pain',
       home: SplashScreenPage(),
       routes: {
 
