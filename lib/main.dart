@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'Screens/Blog_Screen/Blog_InfoPage.dart';
 import 'Screens/Blog_Screen/Blog_Page.dart';
@@ -12,7 +13,11 @@ import 'Screens/Youtube_Videos/YoutubeVideo_Screen.dart';
 
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

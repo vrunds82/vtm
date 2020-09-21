@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vtm/Config/Constants.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:seekbar/seekbar.dart';
@@ -172,7 +176,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
       //bottomNavigationBar: CustomBottomBar(),
       body: Column(
         children: [
-          Container(color: Colors.red,),
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -186,8 +190,10 @@ class _VtmHomePageState extends State<VtmHomePage> {
                               children: [
                                 Container(
                                   width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height * .5,
+                                  height: MediaQuery.of(context).size.width,
+
                                   decoration: new BoxDecoration(
+
                                       shape: BoxShape.rectangle,
                                       image: new DecorationImage(
                                         image: AssetImage(
@@ -238,10 +244,11 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 70,)
+
+
                               ],
                             ),
-                            Positioned(
+                         /*   Positioned(
                               bottom: 0,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -332,6 +339,11 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                                         }else
                                                           {
                                                             CommonPlayer.assetsAudioPlayer.play();
+                                                            if( CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/001.mp3"){
+                                                              createRecord();
+                                                            }
+
+
                                                           }
 
                                                  initplayer();
@@ -367,7 +379,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                                   ),
                                 ],
                               ),
-                            ),
+                            ),*/
                           ],
                         ),
                       ),
@@ -377,62 +389,15 @@ class _VtmHomePageState extends State<VtmHomePage> {
                     height: 15,
                   ),*/
 
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Global.currentPageIndex=0;
-                              widget.refreshScreen();
-                            },
-                            child: Container(
-                                child: SvgPicture.asset(
-                              infoReadImage,
-                              color: VtmBlue,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
-                          ),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
 
-
-                              if(CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single)
-                                {
-                                  await CommonPlayer.assetsAudioPlayer
-                                      .setLoopMode(LoopMode.none);
-                                }else {
-                                await CommonPlayer.assetsAudioPlayer
-                                    .setLoopMode(LoopMode.single);
-                              }
-                              setState(() {
-
-                              });
-
-                              //CommonPlayer.assetsAudioPlayer.seek(Duration(seconds: 0));
-                            },
-                            child: Container(
-                                child: SvgPicture.asset(
-                              repeatImage,
-                              color: CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single?VtmBlue:VtmInActiveColor,
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )),
-                          ),
-                        ],
-                      ),
                       SizedBox(
                         height: 20,
                       ),
+
+                      // Trackname and Authorname
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal:15.0),
                         child: Row(
@@ -464,6 +429,8 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       SizedBox(
                         height: 10,
                       ),
+
+                      // Slider
                       Container(
 
                         padding: EdgeInsets.symmetric(horizontal: 0),
@@ -473,7 +440,234 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      Padding(
+
+                      // Premium
+                      isPremium? Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+
+                                  if(Platform.isIOS){
+                                    toStore(iOSLink);
+                                  }else
+                                  {
+                                    toStore(androidLink);
+                                  }
+
+
+
+                                },
+                                child: Text(
+                                  buyProVersion_text??"BUY PRO VERSION TO HEAR FULL PROGRAM",
+                                  style: TextStyle(
+                                      color: VtmRed,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 12,
+                                      fontFamily: "Montserrat-Bold"),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ):SizedBox(),
+
+                      // Controls
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.width*0.15,
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.width * 0.12,
+                                      width: MediaQuery.of(context).size.width * 0.55,
+                                      decoration: BoxDecoration(
+                                          color: keysBackground,
+
+                                          border: Border.all(
+                                              color: VtmLightBlue.withOpacity(0.2),
+                                              width: 0.0),
+                                          borderRadius: BorderRadius.circular(40.0)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: (){
+                                                //   ChangeAudio();
+                                                CommonPlayer.assetsAudioPlayer.seekBy(Duration(seconds: -10));
+                                              },
+                                              child: SvgPicture.asset(
+                                                backwardImage,
+                                                color: VtmBlue,
+                                                height:
+                                                MediaQuery.of(context).size.width * 0.05,
+                                                width: MediaQuery.of(context).size.width * 0.05,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                //ChangeAudio();
+                                                CommonPlayer.assetsAudioPlayer.seekBy(Duration(seconds: 10));
+                                              },
+                                              child: SvgPicture.asset(
+                                                forwardImage,
+                                                color: VtmBlue,
+                                                height:
+                                                MediaQuery.of(context).size.width * 0.05,
+                                                width: MediaQuery.of(context).size.width * 0.05,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                //circle
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Center(
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.width * 0.15,
+                                            width: MediaQuery.of(context).size.width * 0.15,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                new BoxShadow(
+                                                  color: Colors.black26,
+                                                  blurRadius: 3.0,
+                                                ),
+                                              ],
+                                            ),
+                                            //color: Colors.lightBlueAccent,
+                                            child:
+                                            GestureDetector(
+                                              onTap: ()async{
+                                                print("sdada");
+                                                if(CommonPlayer.assetsAudioPlayer.isPlaying.value){
+                                                  CommonPlayer.assetsAudioPlayer.pause();
+                                                }else
+                                                {
+                                                  CommonPlayer.assetsAudioPlayer.play();
+                                                  if( CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/001.mp3"){
+                                                    createRecord();
+                                                  }
+
+
+                                                }
+
+                                                initplayer();
+                                              },
+                                              child: Center(child:
+                                              ClipOval(
+                                                child: Material(
+                                                  color: VtmWhite, // button color
+                                                  child: SizedBox(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(16.0),
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(left: CommonPlayer.assetsAudioPlayer.isPlaying.value? 0:8.0),
+                                                          child: SvgPicture.asset(
+                                                            CommonPlayer.assetsAudioPlayer.isPlaying.value? pauseImage:playImage,
+                                                            color: VtmBlue,
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                        ),
+                                                      )),
+                                                ),
+                                              )
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      // Read and Replay
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              Global.currentPageIndex=0;
+                              widget.refreshScreen();
+                            },
+                            child: Container(
+                                child: SvgPicture.asset(
+                                  infoReadImage,
+                                  color: VtmBlue,
+                                  height: MediaQuery.of(context).size.width * 0.05,
+                                  width: MediaQuery.of(context).size.width * 0.05,
+                                )),
+                          ),
+                          SizedBox(
+                            width: 40,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+
+
+                              if(CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single)
+                              {
+                                await CommonPlayer.assetsAudioPlayer
+                                    .setLoopMode(LoopMode.none);
+                              }else {
+                                await CommonPlayer.assetsAudioPlayer
+                                    .setLoopMode(LoopMode.single);
+                              }
+                              setState(() {
+
+                              });
+
+                              //CommonPlayer.assetsAudioPlayer.seek(Duration(seconds: 0));
+                            },
+                            child: Container(
+                                child: SvgPicture.asset(
+                                  repeatImage,
+                                  color: CommonPlayer.assetsAudioPlayer.loopMode.value==LoopMode.single?VtmBlue:VtmInActiveColor,
+                                  height: MediaQuery.of(context).size.width * 0.05,
+                                  width: MediaQuery.of(context).size.width * 0.05,
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      // Introduction to program
+                      isEnglish?SizedBox():Padding(
                         padding: const EdgeInsets.symmetric(horizontal:15.0),
 
                         child: GestureDetector(
@@ -507,24 +701,7 @@ class _VtmHomePageState extends State<VtmHomePage> {
                       SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              buyProVersion_text??"BUY PRO VERSION TO HEAR FULL PROGRAM",
-                              style: TextStyle(
-                                  color: VtmRed,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 12,
-                                  fontFamily: "Montserrat-Bold"),
-                            ),
-                          )
-                        ],
-                      ),
+
                       SizedBox(
                         height: 10,
                       ),
@@ -541,22 +718,35 @@ class _VtmHomePageState extends State<VtmHomePage> {
 
 
   ChangeAudio() async {
-
-
     print("Current Audio ::::::: ${CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?"Audio 1":"Audio 2"}");
     print("Changing to ||||||||| ${CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?"Audio 1":"Audio 2"}");
     await CommonPlayer.assetsAudioPlayer.playlistPlayAtIndex(CommonPlayer.assetsAudioPlayer.current.value.audio.assetAudioPath=="assets/audio/002.mp3"?0:1);
-
     initplayer();
-
-
   }
 
-  //return Loop Icon
-replay(){
 
+  void createRecord() async {
 
-}
+    Fluttertoast.showToast(msg: creatingADiaryEntry?? "Creating a diary entry");
 
+    DocumentReference ref = await Firestore.instance.collection("users/${Global.user.uid}/review")
+        .add({
+      'date': DateTime.now().toString().split(' ')[0],
+      'rating': 5,
+      'comment': "",
+      'isFavourite':true,
+      'timestamp': DateTime.now()
+    });
+    print(ref.firestore);
+  }
+
+  toStore(String url) async {
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
 }

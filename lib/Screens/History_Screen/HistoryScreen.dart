@@ -26,7 +26,7 @@ class _HistoryPageState extends State<HistoryPage> {
   //FirebaseFirestore firestore = FirebaseFirestore.instance;
   Firestore firestore = Firestore.instance;
 
-  String ratingvalue;
+  String ratingvalue="5";
   DateTime selectedDate = DateTime.now();
   bool isFavorite = false;
 
@@ -48,7 +48,19 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   void createRecord() async {
-    DocumentReference ref = await firestore.collection("review")
+    DocumentReference ref = await firestore.collection("users/${Global.user.uid}/review")
+        .add({
+      'date': DateTime.now().toString().split(' ')[0],
+      'rating': ratingvalue,
+      'comment': comment.text.toString(),
+      'isFavourite':isFavorite,
+      'timestamp':DateTime.now()
+    });
+    print(ref.firestore);
+  }
+
+  void updateRecord() async {
+    DocumentReference ref = await firestore.collection("users/${Global.user.uid}/review")
         .add({
       'date': DateTime.now().toString().split(' ')[0],
       'rating': ratingvalue,
@@ -59,7 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   _displayDialog(BuildContext context) async {
-    var rating = 3.0;
+    var rating =5.0;
     bool isFavorite = false;
     return showDialog(
 
@@ -187,22 +199,16 @@ class _HistoryPageState extends State<HistoryPage> {
                         side: BorderSide(color: VtmWhite)
                     ),
                     color: VtmBlue,
-                    child: new Text('SUBMIT',style: TextStyle(
+                    child: new Text(submitButton??'SUBMIT',style: TextStyle(
                       color: VtmWhite
                     ),),
                     onPressed: () {
                       print(rating);
                       //print(ratingvalue);
-                      print("Comment"+comment.toString());
-                      if(comment.text==""||ratingvalue==null){
-                        Show_toast_Now("Please fill the field", Colors.red);
-                      }
-                      else {
-                        createRecord();
-                        Show_toast_Now("Review Submitted", Colors.green);
 
+                        createRecord();
+                        Show_toast_Now(newEntrySubmitted??"Review Submitted", VtmBlue);
                         Navigator.of(context).pop();
-                      }
                       comment.text="";
 
 
@@ -265,7 +271,6 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -301,7 +306,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   _displayDialog(context);
 
                 },
-                text: "HISTORY",
+                text: historyTitleText??"HISTORY",
                 menuiconclr: VtmBlue,
                 clickonmenuicon: () {
                   print("clicked");
@@ -312,7 +317,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 height: 10,
               ),
               StreamBuilder(
-                stream: Firestore.instance.collection("review").snapshots(),
+                stream: Firestore.instance.collection("users/${Global.user.uid}/review").orderBy('timestamp',descending: true).snapshots(),
                 builder: (context, snapshot)
                 {
                   if (!snapshot.hasData) {
@@ -323,7 +328,9 @@ class _HistoryPageState extends State<HistoryPage> {
                     child: ListView.builder(
                       itemCount: snapshot.data.documents.length,
                       itemBuilder: (context, index) {
-                        return _buildList(context, snapshot.data.documents[index]);
+                        return _buildList(context, snapshot.data.documents[index],(){setState(() {
+
+                        });});
 
                       },
 
@@ -344,20 +351,218 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 }
-Widget _buildList(BuildContext context, DocumentSnapshot document) {
+
+
+Widget _buildList(BuildContext context, DocumentSnapshot document,VoidCallback refreshScreen) {
+
+
+
   bool isFavorite = document['isFavourite'];
   Firestore firestore = Firestore.instance;
 
-  var rating = double.parse(document['rating']);
+  var rating = double.parse(document['rating'].toString());
 
+  _editDialog(BuildContext context,{double ratingnew,String text}) async {
+    double rating =ratingnew;
+    bool isFavorite = false;
+
+    TextEditingController editText = TextEditingController(text: text);
+
+    return showDialog(
+
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(child: Text(didTheSessionHelpText??'Did the session help?',style: TextStyle(color: VtmBlue),)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))
+            ),
+            content: Container(
+              decoration: BoxDecoration(
+                //color: VtmLightBlue.withOpacity(0.2),
+
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(40))),
+
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Divider(color: VtmGrey.withOpacity(0.9),thickness: 1,),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        programStartedText??"Program Started: ",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color:VtmGrey.withOpacity(0.9),
+                          fontFamily: 'Montserrat-Regular',
+                          fontWeight: FontWeight.w600,),
+                      ),
+                      Text(DateTime.now().toString().split(' ')[0],
+                          style: TextStyle(
+                              color: VtmGrey.withOpacity(0.9),
+                              fontSize: 14,
+                              fontFamily: 'Montserrat-Regular',
+                              fontWeight: FontWeight.w600))
+                    ],
+                  ),
+
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SmoothStarRating(
+                    color: VtmBlue,
+                    rating: rating,
+                    borderColor: VtmGrey,
+                    isReadOnly: false,
+                    size: 40,
+                    filledIconData: Icons.star,
+                    //halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 2.0,
+                    onRated: (value) {
+                      rating=value;
+                      print("rating value " + rating.toString());
+                      // print("rating value dd -> ${value.truncate()}");
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: TextField(
+                      controller: editText,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: VtmGrey.withOpacity(0.2),
+                                width: 1.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: VtmGrey.withOpacity(0.2),
+                                width: 1.0),
+                          ),
+                          hintText:
+                          historyHintText??"Your personal remark about the session",
+                          hintStyle: TextStyle(
+                              color: VtmGrey.withOpacity(0.9),
+                              fontFamily: 'Montserrat-Regular',
+                              fontSize: 14)),
+                      style: TextStyle(
+                          color: VtmGrey.withOpacity(0.9),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: VtmWhite)
+                    ),
+                    color: VtmBlue,
+                    child: new Text(submitButton??'SUBMIT',style: TextStyle(
+                        color: VtmWhite
+                    ),),
+                    onPressed: () async {
+                      print(rating);
+                      //print(ratingvalue);
+
+                      await firestore.collection("users/${Global.user.uid}/review").document(document.documentID)
+                          .updateData({
+                        'date': DateTime.now().toString().split(' ')[0],
+                        'rating': rating,
+                        'comment': editText.text
+                      }).catchError((onError){
+                        print(onError.message);
+                      });
+
+                      Show_toast_Now(entryUpdated??"Review Submitted", VtmBlue);
+                      Navigator.of(context).pop();
+                      editText.text="";
+                      refreshScreen();
+
+
+
+                    },
+                  )
+                  /*Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            'assets/images/dustbin.svg',
+                            color: VtmBlack,
+                          )),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            isFavorite = !isFavorite;
+                            setState(() {});
+                          },
+                          child: isFavorite
+                              ? Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                              : Icon(
+                            Icons.favorite,
+                            color: VtmGrey,
+                          )),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Container(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            'assets/images/share.svg',
+                            color: VtmGrey,
+                          )),
+                    ],
+                  )*/
+                ],
+              ),
+            ),
+            /*actions: <Widget>[
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  createRecord();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],*/
+          );
+        });
+  }
 
   sharedata(){
-    Share.share("Program On: " + document['date']+ "\nDid the session help ?: " + document['rating'] + "\nReview: " + document['comment']);
+    Share.share("$shareTextStarting $linkOfApp $beforeStarRatingText ${document['rating']} $afterStarRatingText ${document['comment']}");
+    //Share.share("Program On: " + document['date']+ "\nDid the session help ?: " + document['rating'] + "\nReview: " + document['comment']);
   }
 
   _updateData() async {
     await firestore
-        .collection('review')
+        .collection('users/${Global.user.uid}/review')
         .document(document.documentID)
         .updateData({'isFavourite':isFavorite});
   }
@@ -404,7 +609,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                   GestureDetector(
                       onTap: () async {
 
-                        await firestore.collection("review").document(document.documentID).delete();
+                        await firestore.collection("users/${Global.user.uid}/review").document(document.documentID).delete();
                         Show_toast_Now("Deleted Successfully", Colors.red);
                         Navigator.of(context).pop();
 
@@ -413,7 +618,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                 ],
               ),
               onPressed: () async{
-                await firestore.collection("review").document(document.documentID).delete();
+                await firestore.collection("users/${Global.user.uid}/review").document(document.documentID).delete();
                 Show_toast_Now("Deleted Successfully", Colors.red);
 
                 Navigator.of(context).pop();
@@ -549,8 +754,8 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                           Deletedialog(context);
                         },
                         child: Container(
-                            height: MediaQuery.of(context).size.width * Global.iconSize,
-                            width: MediaQuery.of(context).size.width * Global.iconSize,
+                            height: MediaQuery.of(context).size.width * Global.dairyIconSize,
+                            width: MediaQuery.of(context).size.width * Global.dairyIconSize,
                             child: SvgPicture.asset(
                               'assets/images/dustbin.svg',
                               color: VtmGrey,
@@ -573,7 +778,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
 
                         Icons.favorite,
                         color: Colors.red,
-                              size: MediaQuery.of(context).size.width * Global.iconSize+5,
+                              size: MediaQuery.of(context).size.width * Global.dairyIconSize+5,
                       ),
                           )
                           : GestureDetector(
@@ -584,7 +789,7 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                         },
                             child: Icon(
                         Icons.favorite,
-                        color: VtmGrey,size: MediaQuery.of(context).size.width * Global.iconSize+5,
+                        color: VtmGrey,size: MediaQuery.of(context).size.width * Global.dairyIconSize+5,
                       ),
                           ),
                       SizedBox(
@@ -595,13 +800,27 @@ Widget _buildList(BuildContext context, DocumentSnapshot document) {
                           sharedata();
                         },
                         child: Container(
-                            height: MediaQuery.of(context).size.width * Global.iconSize,
-                            width: MediaQuery.of(context).size.width * Global.iconSize,
+                            height: MediaQuery.of(context).size.width * Global.dairyIconSize,
+                            width: MediaQuery.of(context).size.width * Global.dairyIconSize,
                             child: SvgPicture.asset(
                               'assets/images/share.svg',
                               color: VtmGrey,
                             )),
                       ),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          isFavorite=true;
+                          print(isFavorite);
+                          _editDialog(context,text: document['comment'],ratingnew: double.parse(document['rating'].toString()));
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          color: VtmGrey,size: MediaQuery.of(context).size.width * Global.dairyIconSize+5,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(

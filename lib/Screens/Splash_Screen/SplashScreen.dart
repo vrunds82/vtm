@@ -1,6 +1,8 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vtm/Config/Constants.dart';
 
 import 'dart:async';
 
@@ -25,15 +27,35 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   startTime() async {
 
+
+
+    FirebaseAuth.instance.currentUser().then((user) async {
+      if(user==null){
+
+        await FirebaseAuth.instance.signInAnonymously().then((value) {
+
+          Global.user=value.user;
+
+        });
+
+      }   else{
+
+        Global.user=user;
+
+      }
+
+    });
+
+
     await CommonPlayer.assetsAudioPlayer.open(
         Playlist(
             audios: [
               Audio("assets/audio/001.mp3"),
               Audio("assets/audio/002.mp3")
             ]
-        )
+        ),
 
-        , autoStart: false,
+         autoStart: false,
         showNotification: true);
 
     var _duration = new Duration(seconds: 3);
@@ -61,12 +83,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
                 child: SvgPicture.asset(imagename,color: VtmBlue,)),
             SizedBox(height: 20,),
-            Text("The Relief of Pain",style: TextStyle(
+            Text(splashTitle??"The Relief of Pain",style: TextStyle(
                 color: VtmBlue,fontWeight: FontWeight.bold,
                 fontSize: 36
             ),),
             Spacer(),
-            Text("VTM Dr. Stein",style: TextStyle(
+            Text(splashSubTitle??"VTM Dr. Stein",style: TextStyle(
               color: VtmBlue,fontWeight: FontWeight.bold,
               fontSize: 30
             ),),

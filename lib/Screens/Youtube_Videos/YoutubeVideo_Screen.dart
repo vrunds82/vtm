@@ -34,7 +34,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
 
 
   _launchURL() async {
-    const url = 'https://www.youtube.com/user/VTMStein';
+    const url = 'https://www.youtube.com/playlist?list=PL30UNi-swIZidMWsNyWster0B4UhiDmQ_';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -55,6 +55,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
       Show_toast_Now(noInterNet??"No Internet Connection", Colors.red);
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -76,11 +77,14 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
   }
 
   _initChannel() async {
-    Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UCjEn6jqeMuCZzJJGfE-vLsg');
-    setState(() {
-      _channel = channel;
-    });
+
+    if(Global.channel==null) {
+      Channel channel = await APIService.instance
+          .fetchChannel(channelId: 'UCjEn6jqeMuCZzJJGfE-vLsg');
+      setState(() {
+        _channel = channel;
+      });
+    }
   }
 
   _buildProfileInfo() {
@@ -112,7 +116,7 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  doctorName??"VTM Dr. Stein",
+                  doctorCompanyName??"VTM Dr. Stein",
                   style: TextStyle(
                     color: VtmBlue,
                     fontSize: 20.0,
@@ -221,14 +225,16 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
   }
 
   _loadMoreVideos() async {
-    _isLoading = true;
-    List<Video> moreVideos = await APIService.instance
-        .fetchVideosFromPlaylist(playlistId: _channel.uploadPlaylistId);
-    List<Video> allVideos = _channel.videos..addAll(moreVideos);
-    setState(() {
-      _channel.videos = allVideos;
-    });
-    _isLoading = false;
+
+
+      _isLoading = true;
+      List<Video> moreVideos = await APIService.instance.fetchVideosFromPlaylist(playlistId: "PL30UNi-swIZidMWsNyWster0B4UhiDmQ_");
+      List<Video> allVideos = _channel.videos..addAll(moreVideos);
+      setState(() {
+        _channel.videos = allVideos;
+      });
+      _isLoading = false;
+
   }
 
   /*YoutubePlayerController _controller = YoutubePlayerController(
@@ -313,9 +319,9 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                           _channel.videos.length != int.parse(_channel.videoCount) &&
                           scrollDetails.metrics.pixels ==
                               scrollDetails.metrics.maxScrollExtent) {
-                        if(_channel.videos.length<6) {
+
                           _loadMoreVideos();
-                        }
+
                       }
                       return false;
                     },
@@ -332,13 +338,15 @@ class _YoutubevidepageState extends State<Youtubevidepage> {
                       ),
                     ),
                   )
-                      : Center(
+                      : Expanded(
+                        child: Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor, // Red
-                      ),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor, // Red
+                        ),
                     ),
                   ),
+                      ),
 
                 ],
               ),

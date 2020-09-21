@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vtm/Config/Constants.dart';
+import 'package:vtm/Models/Channel_Model.dart';
+import 'package:vtm/Models/Video_Model.dart';
 import 'package:vtm/Screens/MusicPlayer_Home/VtmHome.dart';
 import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
 
@@ -16,9 +20,15 @@ const VtmInActiveColor  = Color(0xff727cc5);
 class Global {
   static int currentPageIndex = 1;
   static double iconSize = 0.07;
+  static double dairyIconSize = 0.05;
   static bool fullScreenPlayer=false;
   static wp.Post currentSelectedPost;
   static Future<List<wp.Post>> myPOSTs;
+  static FirebaseUser user ;
+
+  static Channel channel;
+  static List<Video> allVideos;
+
 }
 
 class CustomAppBar extends StatelessWidget {
@@ -32,6 +42,7 @@ class CustomAppBar extends StatelessWidget {
   final VoidCallback onBack;
 
   final String addImage = 'assets/images/more.svg';
+  final String backButton =  'assets/images/backbutton.svg';
   final String menuImage = 'assets/images/menu.svg';
 
   CustomAppBar(
@@ -55,9 +66,9 @@ class CustomAppBar extends StatelessWidget {
                     height: MediaQuery.of(context).size.width * 0.06,
                     width: MediaQuery.of(context).size.width * 0.06,
                     child: GestureDetector(
-                        onTap: clickonmenuicon,
+                        onTap: onBack??clickonmenuicon,
                         child: SvgPicture.asset(
-                          menuImage,
+                          onBack==null?menuImage:backButton,
                           color: menuiconclr,
                         ))),
                 Spacer(),
@@ -235,7 +246,27 @@ class CustomDrawer extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Center(child: Text('Legal')),
+              title: Row(
+                children: [
+                  Opacity(
+                    opacity: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.cancel,color: VtmBlue,size: MediaQuery.of(context).size.width*0.06,),
+                    ),
+                  ),
+                  Expanded(child: Center(child: Text(mainMenulegalTitleText??'Legal'))),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.cancel,color: VtmBlue,size: MediaQuery.of(context).size.width*0.06,),
+                    ),
+                  ),
+                ],
+              ),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))
               ),
@@ -245,7 +276,7 @@ class CustomDrawer extends StatelessWidget {
 
                     borderRadius:
                     BorderRadius.all(Radius.circular(40))),
-                height: MediaQuery.of(context).size.height * 0.35,
+                height: MediaQuery.of(context).size.height * 0.6,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -254,9 +285,14 @@ class CustomDrawer extends StatelessWidget {
                       height: 10,
                     ),
 
-                    Text("Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, \n"
-                        "graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have \n"
-                        "scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.")
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Text(legalDescText??" "),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
 
 
                   ],
@@ -306,7 +342,7 @@ class CustomDrawer extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      "The Relief of Pain",
+                      appTitle_text??"The Relief of Pain",
                       style: TextStyle(
                           fontFamily: 'Montserrat-SemiBold',
                           fontWeight: FontWeight.bold,
@@ -341,7 +377,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'Player',
+                            mainMenuPlayerText??'Player',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,
@@ -369,7 +405,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'Infos',
+                            mainMenuInfosText??'Infos',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,
@@ -397,7 +433,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'History',
+                            mainMenuHistoryText??'History',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,
@@ -425,7 +461,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'Videos',
+                            mainMenuVideosText??'Videos',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,
@@ -453,7 +489,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'More',
+                            mainMenuMoreText??'More',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,
@@ -482,7 +518,7 @@ class CustomDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'Legal',
+                            mainMenulegalTitleText??'Legal',
                             style: TextStyle(
                                 fontFamily: 'MontserratSubrayada-Bold',
                                 fontWeight: FontWeight.bold,

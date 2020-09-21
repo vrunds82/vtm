@@ -67,7 +67,11 @@ class _BlogInfoState extends State<BlogInfo> {
               clickonmenuicon: (){
                 print("clicked");
                 _scaffoldKey.currentState.openDrawer();
-              },),
+              },
+            onBack: (){
+              Global.currentPageIndex=4;
+              widget.refreshScreen();
+            },),
 
 
 

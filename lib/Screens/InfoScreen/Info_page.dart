@@ -18,7 +18,7 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
 
 
-  int SelectedIndex=0;
+  int SelectedIndex=1;
 
   List<String> Title =[aboutTitleText,stereotiefensuggestionTitleText,neuesTitleText];
   List<String> myList =[
@@ -131,11 +131,10 @@ class _InfoScreenState extends State<InfoScreen> {
                       fontSize: 22,color: VtmBlue
                     ),),
                     SizedBox(height: 10,),
-                    MyInfoTile(title: aboutTitleText??"About",onPressed:(){ setIndex(0);},selected: SelectedIndex==0,),
 
                     MyInfoTile(title: stereotiefensuggestionTitleText??"Stereotiefensuggestion",onPressed: (){ setIndex(1);},selected: SelectedIndex==1,),
-
                     MyInfoTile(title: neuesTitleText??"Neues",onPressed: (){ setIndex(2);},selected: SelectedIndex==2,),
+                    MyInfoTile(title: aboutTitleText??"About",onPressed:(){ setIndex(0);},selected: SelectedIndex==0,),
                     SizedBox(height: 25,),
 
 

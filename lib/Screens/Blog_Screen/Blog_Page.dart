@@ -5,6 +5,7 @@ import 'package:vtm/Screens/Blog_Screen/Blog_InfoPage.dart';
 import 'package:vtm/Screens/Global_File/GlobalFile.dart';
 import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
 import 'dart:io';
+import 'package:flutter_launcher_icons/constants.dart';
 
 
 
@@ -22,7 +23,7 @@ class _BlogScreenState extends State<BlogScreen> {
   wp.WordPress wordPress = wp.WordPress(
     baseUrl: 'http://blog.vtm-stein.de/',
   );
-  var _wifiEnabled;
+  bool _wifiEnabled=true;
 
   test()async{
     try {
@@ -41,6 +42,7 @@ class _BlogScreenState extends State<BlogScreen> {
   _fetchPosts() {
     Future<List<wp.Post>> posts = wordPress.fetchPosts(
         postParams: wp.ParamsPostList(
+      includeCategories: [2],
           context: wp.WordPressContext.view,
           pageNum: 1,
           perPage: 50,
@@ -161,10 +163,10 @@ class MiniBlogTile extends StatelessWidget {
                   child: Row(
                     children: [
                       post.featuredMedia!=null?ClipRRect(borderRadius: BorderRadius.circular(4),
-                          child: Image.network(post.featuredMedia.sourceUrl,height:MediaQuery.of(context).size.width*.25,width: MediaQuery.of(context).size.width*.4,fit: BoxFit.cover ,)):
+                          child: Image.network(post.featuredMedia.sourceUrl,height:MediaQuery.of(context).size.width*.25,width: MediaQuery.of(context).size.width*.3,fit: BoxFit.cover ,)):
                       Container(
 
-    height:MediaQuery.of(context).size.width*.25,width: MediaQuery.of(context).size.width*.4,
+    height:MediaQuery.of(context).size.width*.25,width: MediaQuery.of(context).size.width*.3,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: SvgPicture.asset(imagename,color: VtmBlue,),
@@ -175,38 +177,44 @@ class MiniBlogTile extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(post.title.rendered.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  fontFamily: 'Montserrat-Regular',
-                                color: VtmBlue
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(post.title.rendered.toString().length<23?post.title.rendered.toString():post.title.rendered.toString().substring(0,23)+"...",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                        fontFamily: 'Montserrat-Regular',
+                                      color: VtmBlue
 
-                              ),),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Text(post.author.name,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Montserrat-Regular'
-                              ),),
-                            SizedBox(
-                              height: 5,
-                            ),
+                                    ),),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(post.author.name,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Montserrat-Regular'
+                                    ),),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
 Spacer(),
-                            Row(
-                              children: [
+                                  Row(
+                                    children: [
 
-                                Text(
-                                  "READ MORE",
-                                  style: TextStyle(fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat-Regular'),
-                                ),
-                              ],
+                                      Text(
+                                        "READ MORE",
+                                        style: TextStyle(fontSize: 11,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Montserrat-Regular'),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
